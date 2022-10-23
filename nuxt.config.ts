@@ -1,5 +1,4 @@
 import { defineNuxtConfig } from 'nuxt/config'
-import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
@@ -7,7 +6,15 @@ export default defineNuxtConfig({
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',
-    '@pinia/nuxt',
+    [
+      '@pinia/nuxt',
+      {
+        autoImports: [
+          'defineStore',
+          ['defineStore', 'definePiniaStore'],
+        ],
+      },
+    ],
     '@nuxtjs/color-mode',
     '@nuxt/content',
   ],
@@ -33,6 +40,13 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: '',
   },
+  imports: {
+    dirs: [
+      'composables',
+      'composables/*/index.{ts,js,mjs,mts}',
+      'composables/**',
+    ],
+  },
   // https://github.com/nuxt/framework/issues/6204#issuecomment-1201398080
   hooks: {
     'vite:extendConfig': function (config: any, { isServer }: any) {
@@ -56,18 +70,6 @@ export default defineNuxtConfig({
   },
   vite: {
     plugins: [
-      AutoImport({
-        imports: [
-          {
-            'naive-ui': [
-              'useDialog',
-              'useMessage',
-              'useNotification',
-              'useLoadingBar',
-            ],
-          },
-        ],
-      }),
       Components({
         resolvers: [NaiveUiResolver()],
       }),
