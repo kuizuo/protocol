@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'KZ_API',
+      name: 'CX',
       exec_mode: 'cluster',
       instances: '1',
       env: {

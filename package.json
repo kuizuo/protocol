@@ -35,7 +35,6 @@
     "@nuxt/content": "^2.1.1",
     "@nuxt/test-utils-edge": "npm:@nuxt/test-utils-edge@latest",
     "@nuxtjs/color-mode": "^3.1.4",
-    "@nuxtjs/proxy": "^2.1.0",
     "@pinia/nuxt": "^0.4.1",
     "@types/cheerio": "^0.22.31",
     "@types/jsonwebtoken": "^8.5.9",

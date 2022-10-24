@@ -4,15 +4,16 @@ const info = $computed(() => userStore.info)
 </script>
 
 <template>
-  <div>
-    <n-avatar :size="100" :src="info?.avatar" />
-    <div flex justify-center items-center gap-4>
-      <p>{{ info?.school }}</p>
-      {{ info?.username }}
+  <div flex justify-center items-center>
+    <n-avatar :src="info?.avatar" />
+    <div flex justify-center items-center gap-2 ml-2>
+      <span>{{ info?.siteName }}</span>
+      <span>{{ info?.realname }}</span>
+      <!-- <span>{{ info?.username }}</span> -->
+      <n-button size="small" @click="userStore.logout()">
+        退出
+      </n-button>
     </div>
-    <n-button @click="userStore.logout()">
-      登出
-    </n-button>
   </div>
 </template>
 

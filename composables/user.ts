@@ -32,8 +32,8 @@ export const useUserStore = defineStore('user', () => {
   async function logout() {
     if (token.value) {
       try {
-        const { data } = await http.post('/cx/logout')
-        message.success(data.message)
+        await http.get('/cx/logout')
+        message.success('退出成功')
       }
       catch (error: any) {
         console.log(`logout error:${error.toString()}`)

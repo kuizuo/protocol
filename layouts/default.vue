@@ -4,7 +4,7 @@
 <template>
   <div>
     <BaseNav />
-    <main class="py-4 px-5 lg:px-10 text-center mx-auto max-w-6xl">
+    <main class="py-4 px-5 lg:px-10 mx-auto max-w-6xl">
       <slot />
     </main>
     <BaseFooter />
