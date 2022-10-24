@@ -1,6 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { useMessage } from 'naive-ui'
-import http from '~~/composables/http'
 const namespace = 'cx'
 
 export const useUserStore = defineStore('user', () => {
@@ -48,7 +47,6 @@ export const useUserStore = defineStore('user', () => {
 
   async function getCourseList() {
     const { data } = (await http.get('/cx/courseList'))
-    console.log(data)
     courseList.value = data
   }
 

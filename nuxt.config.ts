@@ -27,10 +27,6 @@ export default defineNuxtConfig({
       },
     },
   },
-  experimental: {
-    reactivityTransform: true,
-    viteNode: true,
-  },
   unocss: {
     uno: true,
     icons: true,
@@ -46,6 +42,10 @@ export default defineNuxtConfig({
       'composables/*/index.{ts,js,mjs,mts}',
       'composables/**',
     ],
+  },
+  experimental: {
+    reactivityTransform: true,
+    viteNode: true,
   },
   // https://github.com/nuxt/framework/issues/6204#issuecomment-1201398080
   hooks: {

@@ -1,5 +1,5 @@
 import { qsParse, qsStringify, timestamp } from '@kuizuo/utils'
-import * as cheerio from 'cheerio'
+import cheerio from 'cheerio'
 import { AHttp } from '@kuizuo/http'
 
 export class Cx {
@@ -59,9 +59,9 @@ export class Cx {
   }
 
   async getCourseList() {
-    const { data: html } = await this.http.post<string, CX.Course.Body>(
+    const { data: html } = await this.http.post<string, string>(
       'http://mooc1-1.chaoxing.com/visit/courselistdata',
-      { courseType: '1', courseFolderId: '0', courseFolderSize: '0' },
+      qsStringify({ courseType: '1', courseFolderId: '0', courseFolderSize: '0' }),
     )
     const $ = cheerio.load(html)
 

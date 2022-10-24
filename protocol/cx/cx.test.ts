@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { Cx } from './cx.class'
 
 const testAccount: CX.User = {
-  username: '19859294266',
-  password: 'Aa123456',
+  username: '15280326573',
+  password: 'zw12wz',
 }
 
 describe('cx', async () => {

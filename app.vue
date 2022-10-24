@@ -20,6 +20,11 @@ useHead({
       rel: 'icon', type: 'image/png', href: '/logo.png',
     },
   ],
+  meta: [
+    {
+      name: 'referrer', content: 'no-referrer',
+    },
+  ],
 })
 </script>
 
