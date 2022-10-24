@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken'
 
+const config = useRuntimeConfig()
 const exclude = ['/api/cx/login', '/api']
 
-export const TOKEN_SECRET = 'protocol'
-
-export default defineEventHandler(async ({ req, context }) => {
+export default defineEventHandler(async (event) => {
+  const { req, context } = event
   try {
     if (!req.url?.startsWith('/api'))
       return
@@ -12,8 +12,7 @@ export default defineEventHandler(async ({ req, context }) => {
     if (exclude.includes(req.url))
       return
 
-    // @ts-expect-error
-    const user = jwt.verify(req.headers.authorization, TOKEN_SECRET)
+    const user = jwt.verify(req.headers.authorization, config.jwtSecret)
 
     context.user = user
   }

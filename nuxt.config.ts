@@ -3,6 +3,13 @@ import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineNuxtConfig({
+  runtimeConfig: {
+    cookieName: process.env.COOKIE_NAME || '__session',
+    cookieSecret: process.env.COOKIE_SECRET || 'secret',
+    cookieExpires: parseInt(process.env.COOKIE_REMEMBER_ME_EXPIRES || '86400000', 10), // 1 day
+    cookieRememberMeExpires: parseInt(process.env.COOKIE_REMEMBER_ME_EXPIRES || '86400000', 10), // 7 days
+    jwtSecret: process.env.JWT_SECRET || 'secret',
+  },
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',

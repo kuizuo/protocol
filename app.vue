@@ -5,8 +5,8 @@ import 'assets/css/preflight.css'
 import { darkTheme, dateZhCN, lightTheme, zhCN } from 'naive-ui'
 
 import type { GlobalTheme } from 'naive-ui'
-import pkg from '~/package.json'
 
+const config = useAppConfig()
 const theme = ref<GlobalTheme | null>(darkTheme)
 const colorMode = useColorMode()
 
@@ -15,7 +15,7 @@ watchEffect(() => {
 })
 
 useHead({
-  title: pkg.name,
+  title: config.title,
   link: [
     {
       rel: 'icon', type: 'image/png', href: '/logo.png',
