@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     NGridItem: typeof import('naive-ui')['NGridItem']
     NInput: typeof import('naive-ui')['NInput']
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
+    NSpace: typeof import('naive-ui')['NSpace']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

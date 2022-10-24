@@ -7,7 +7,7 @@ declare namespace CX {
     realname?: string
     userid?: string
     fid?: string
-    avatar?: string 
+    avatar?: string
     siteName?: string
   };
 
@@ -26,7 +26,7 @@ declare namespace CX {
     isCertify: number
     realname: string
     status: string
-    
+
     // error
     result: boolean
     opacPwd: boolean
@@ -37,13 +37,14 @@ declare namespace CX {
   namespace Course {
 
     interface Item {
-      name: string 
-      finish: boolean 
-      courseId: string  
+      name: string
+      finish: boolean
+      courseId: string
+      classId: string
       enc: string
-      cpi: string 
-      img: string 
-      link: string 
+      cpi: string
+      img: string
+      link: string
     }
 
     interface Data {
@@ -58,5 +59,39 @@ declare namespace CX {
     }
   }
 
+  namespace Activity {
 
+    interface Item {
+      userStatus: number
+      nameTwo: string
+      otherId: string
+      groupId: number
+      source: number
+      isLook: number
+      type: number
+      releaseNum: number
+      attendNum: number
+      activeType: number
+      logo: string
+      nameOne: string
+      startTime: number
+      id: number
+      endTime: number
+      status: number
+      nameFour: string
+    }
+
+    interface Data {
+      result: number
+      msg: any
+      data: {
+        ext: {
+          _from_: string
+        }
+        readingDuration: number
+        activeList: Item[]
+      }
+      errorMsg: any
+    }
+  }
 }

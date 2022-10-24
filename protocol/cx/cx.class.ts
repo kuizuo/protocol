@@ -1,7 +1,7 @@
+import querystring from 'querystring'
 import { qsParse, qsStringify, timestamp } from '@kuizuo/utils'
 import cheerio from 'cheerio'
 import { AHttp } from '@kuizuo/http'
-
 export class Cx {
   public http: AHttp
   public user: CX.User
@@ -23,7 +23,7 @@ export class Cx {
 
       const url_login = `https://passport2.chaoxing.com/api/login?${query}`
 
-      const { data } = await (await this.http.get<CX.LoginResult>(url_login))
+      const { data } = await this.http.get<CX.LoginResult>(url_login)
 
       if (!data.result)
         return data.errorMsg
@@ -42,6 +42,7 @@ export class Cx {
 
   async logout() {
     this.user = {} as CX.User
+    this.courseList = []
     this.http.cookieJar.removeAllCookiesSync()
   }
 
@@ -49,9 +50,9 @@ export class Cx {
     this.user.realname = data.realname
 
     this.user.userid = this.http.getCookie('_uid') as string
-    this.user.fid = this.http.getCookie('fid') as string
+    this.user.fid = this.http.getCookie('fid') as string || '0'
 
-    const { data: html } = await (await this.http.get(`http://i.chaoxing.com/base?t=${timestamp()}`))
+    const { data: html } = await this.http.get(`http://i.chaoxing.com/base?t=${timestamp()}`)
 
     const $ = cheerio.load(html)
     this.user.avatar = `${$('.head-img').attr('src') + this.user.userid}_80`
@@ -74,7 +75,8 @@ export class Cx {
       const name = $(el).find('.course-name').attr('title')!
 
       const param = qsParse(href.substring(href.indexOf('?') + 1))! as {
-        courseId: string
+        courseid: string
+        clazzid: string
         cpi: string
         enc: string
       }
@@ -82,7 +84,8 @@ export class Cx {
       const course: CX.Course.Item = {
         name,
         finish,
-        courseId: param.courseId,
+        courseId: param.courseid,
+        classId: param.clazzid,
         enc: param.enc,
         cpi: param.cpi,
         img,
@@ -94,5 +97,46 @@ export class Cx {
 
     this.courseList = courseList
     return courseList
+  }
+
+  async getActivity(course: CX.Course.Item) {
+    const query = qsStringify({
+      fid: this.user.fid,
+      courseId: course.courseId,
+      classId: course.classId,
+      _: timestamp(),
+    })
+
+    const { data } = await this.http.get<CX.Activity.Data>(`https://mobilelearn.chaoxing.com/v2/apis/active/student/activelist?${query}`)
+
+    return data.data.activeList ?? []
+  }
+
+  async sign(activity: CX.Activity.Item) {
+    // 位置 https://api.map.baidu.com/lbsapi/getpoint/index.html
+    const query = querystring.stringify ({
+      activeId: activity.id,
+      uid: this.user.userid,
+      clientip: '',
+      latitude: '-1',
+      longitude: '-1',
+      appType: '15',
+      fid: this.user.fid,
+      name: activity.nameOne,
+    }, '', '', { encodeURIComponent: str => str })
+    const { data } = (await this.http.get(`https://mobilelearn.chaoxing.com/pptSign/stuSignajax?${query}`))
+
+    if (data === 'success')
+      return '签到成功'
+    else
+      return data
+  }
+
+  async signQrCode() {
+
+  }
+
+  async signAll() {
+
   }
 }

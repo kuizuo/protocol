@@ -49,14 +49,28 @@ export const useUserStore = defineStore('user', () => {
     courseList.value = data
   }
 
+  async function autoSign() {
+    const { data } = (await http.get('/cx/autoSign'))
+
+    return data
+  }
+
+  async function sign() {
+    const { data } = (await http.get('/cx/sign'))
+
+    return data
+  }
+
   return {
     info,
     token,
+    loading,
     courseList,
     login,
     logout,
     getCourseList,
-    loading,
+    autoSign,
+    sign,
   }
 }, {
   persist: {

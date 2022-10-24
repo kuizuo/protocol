@@ -31,7 +31,7 @@
     "@iconify-json/twemoji": "^1.1.5",
     "@kuizuo/eslint-config": "^1.0.0",
     "@kuizuo/http": "^0.3.1",
-    "@kuizuo/utils": "^0.1.3",
+    "@kuizuo/utils": "^0.1.4",
     "@nuxt/content": "^2.1.1",
     "@nuxt/test-utils-edge": "npm:@nuxt/test-utils-edge@latest",
     "@nuxtjs/color-mode": "^3.1.4",
