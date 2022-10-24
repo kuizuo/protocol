@@ -9,7 +9,7 @@ const courseList = $computed(() => userStore.courseList)
   </n-divider>
   <n-card v-if="courseList?.length > 0">
     <n-grid :x-gap="12" :y-gap="8" cols="2 s:3 m:4 l:4 xl:4 2xl:6" responsive="screen">
-      <n-grid-item v-for="course in courseList" :key="course">
+      <n-grid-item v-for="course in courseList" :key="course.courseId">
         <n-card :title="course.name" size="small" hoverable h-full>
           <template #cover>
             <img :src="course.img">

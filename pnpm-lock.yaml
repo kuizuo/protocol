@@ -21,7 +21,7 @@ specifiers:
   naive-ui: ^2.33.3
   nuxt: ^3.0.0-rc.12
   pinia: ^2.0.21
-  pinia-plugin-persist: ^1.0.0
+  pinia-plugin-persistedstate: ^2.3.0
   typescript: ^4.8.2
   unplugin-auto-import: ^0.11.2
   unplugin-vue-components: ^0.22.7
@@ -35,7 +35,7 @@ devDependencies:
   '@kuizuo/http': 0.3.1
   '@kuizuo/utils': 0.1.3
   '@nuxt/content': 2.1.1
-  '@nuxt/test-utils-edge': 3.0.0-rc.13-27772354.a0a59e2_vue@3.2.41
+  '@nuxt/test-utils-edge': 3.0.0-rc.13-27776700.5a88510_vue@3.2.41
   '@nuxtjs/color-mode': 3.1.8
   '@pinia/nuxt': 0.4.3_l7r24p6nevbtlimqmqcwa3ouhu
   '@types/cheerio': 0.22.31
@@ -48,7 +48,7 @@ devDependencies:
   naive-ui: 2.33.5_vue@3.2.41
   nuxt: 3.0.0-rc.12_z4bbprzjrhnsfa24uvmcbu7f5q
   pinia: 2.0.23_l7r24p6nevbtlimqmqcwa3ouhu
-  pinia-plugin-persist: 1.0.0_pinia@2.0.23+vue@3.2.41
+  pinia-plugin-persistedstate: 2.3.0_pinia@2.0.23
   typescript: 4.8.4
   unplugin-auto-import: 0.11.2
   unplugin-vue-components: 0.22.8_vue@3.2.41
@@ -771,11 +771,11 @@ packages:
     resolution: {integrity: sha512-YBI/6o2EBz02tdEJRBK8xkt3zvOFOWlLBf7WKYGBsSYSRtjjgrqPe2skp6VLLmKx5WbHHDNcW+6oACaurxGzeA==}
     dev: true
 
-  /@nuxt/kit-edge/3.0.0-rc.13-27772354.a0a59e2:
-    resolution: {integrity: sha512-a9lHNnGST5Grqoz6kEz4r17JK6FJ1V/YcJ2kIaezB1iIQHikZBiADL4wBswfgSL9tY9o7wP0BjtRZW/pDyze4w==}
+  /@nuxt/kit-edge/3.0.0-rc.13-27776700.5a88510:
+    resolution: {integrity: sha512-+FayTCTk6iPacTkI3PqUUdQBC9WDhS5VBfnC5r6EUKH2pL55ZEHKU8Pv+56Uu3NOTojQz4fcq2DyFKJlyNaVhA==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.13-27772354.a0a59e2
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.13-27776700.5a88510
       c12: 0.2.13
       consola: 2.15.3
       defu: 6.1.0
@@ -849,8 +849,8 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-rc.13-27772354.a0a59e2:
-    resolution: {integrity: sha512-h+hIQ1d+RUUwlp9FY3yJefvJ2rmHP4agzxj9ZTLCc75fRTvNka/jv0NwVMBesHEhTWs1oKkwcsOjhD91Qm1gkA==}
+  /@nuxt/schema-edge/3.0.0-rc.13-27776700.5a88510:
+    resolution: {integrity: sha512-R6qkMxXiJvkhv8wFqNv1f1yTN7X9ROBgHLbmNSowNmWZPAncV5jKFaFNbeF5NCQEG6sd5aORNHSNs7nMPdIsLw==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
       c12: 0.2.13
@@ -934,14 +934,14 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxt/test-utils-edge/3.0.0-rc.13-27772354.a0a59e2_vue@3.2.41:
-    resolution: {integrity: sha512-20p9+bL5P75R8jJ3nEOcYSqQwteD4SJoBUnMa7+4wH3lEgz2JfOURQGwR4GjK8nljA1ngQJXifUyjDaI8Vo8kQ==}
+  /@nuxt/test-utils-edge/3.0.0-rc.13-27776700.5a88510_vue@3.2.41:
+    resolution: {integrity: sha512-uxfu3jJ3fCfBJ91173W7cthfql+Kzf/TnkBFENKeSU065b9XWHBS68x5C7vBewvAGhjqZU1VyvqhGQ6Y5Xo7fw==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     peerDependencies:
       vue: ^3.2.41
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.13-27772354.a0a59e2
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.13-27772354.a0a59e2
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.13-27776700.5a88510
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.13-27776700.5a88510
       consola: 2.15.3
       defu: 6.1.0
       execa: 6.1.0
@@ -6661,19 +6661,15 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /pinia-plugin-persist/1.0.0_pinia@2.0.23+vue@3.2.41:
-    resolution: {integrity: sha512-M4hBBd8fz/GgNmUPaaUsC29y1M09lqbXrMAHcusVoU8xlQi1TqgkWnnhvMikZwr7Le/hVyMx8KUcumGGrR6GVw==}
+  /pinia-plugin-persistedstate/2.3.0_pinia@2.0.23:
+    resolution: {integrity: sha512-K7vzt68Z3lbMDjb23Ki2vgHVBP2QFvjl7WNwzIwqY/DAkhSt8mi/z6bN/cXTst7fJjXWF0lC9NyxFKHfxWehuw==}
     peerDependencies:
-      '@vue/composition-api': ^1.0.0
       pinia: ^2.0.0
-      vue: ^2.0.0 || >=3.0.0
     peerDependenciesMeta:
-      '@vue/composition-api':
+      pinia:
         optional: true
     dependencies:
       pinia: 2.0.23_l7r24p6nevbtlimqmqcwa3ouhu
-      vue: 3.2.41
-      vue-demi: 0.12.5_vue@3.2.41
     dev: true
 
   /pinia/2.0.23_l7r24p6nevbtlimqmqcwa3ouhu:
@@ -8642,21 +8638,6 @@ packages:
     resolution: {integrity: sha512-kjJWPayzup8QFynETVpoYD0gDM2nbwN//bpt86hAHpZ+FPdTJFDQqKpouSLQgb2XjkOYM1uB/yc6Zb3iCvS7Gw==}
     dependencies:
       ufo: 0.8.6
-    dev: true
-
-  /vue-demi/0.12.5_vue@3.2.41:
-    resolution: {integrity: sha512-BREuTgTYlUr0zw0EZn3hnhC3I6gPWv+Kwh4MCih6QcAeaTlaIX0DwOVN0wHej7hSvDPecz4jygy/idsgKfW58Q==}
-    engines: {node: '>=12'}
-    hasBin: true
-    requiresBuild: true
-    peerDependencies:
-      '@vue/composition-api': ^1.0.0-rc.1
-      vue: ^3.0.0-0 || ^2.6.0
-    peerDependenciesMeta:
-      '@vue/composition-api':
-        optional: true
-    dependencies:
-      vue: 3.2.41
     dev: true
 
   /vue-demi/0.13.11_vue@3.2.41:

@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
     if (exclude.includes(req.url))
       return
 
+    // @ts-expect-error
     const user = jwt.verify(req.headers.authorization, config.jwtSecret)
 
     context.user = user

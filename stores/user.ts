@@ -1,6 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { useMessage } from 'naive-ui'
-const namespace = 'cx'
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter()
@@ -19,7 +18,6 @@ export const useUserStore = defineStore('user', () => {
       message.success('登录成功')
       info.value = data.info
       token.value = data.token
-      loading.value = false
       router.push({ path: '/' })
     }
     catch (error) {
@@ -62,17 +60,9 @@ export const useUserStore = defineStore('user', () => {
   }
 }, {
   persist: {
-    enabled: true,
-    strategies: [
-      {
-        key: `${namespace}-user`,
-        // @ts-expect-error
-        storage: process.client ? localStorage : null,
-      },
-    ],
+    key: 'user',
   },
 })
 
 if (import.meta.hot)
   import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))
-

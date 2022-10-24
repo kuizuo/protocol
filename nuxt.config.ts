@@ -40,6 +40,8 @@ export default defineNuxtConfig({
       'composables',
       'composables/*/index.{ts,js,mjs,mts}',
       'composables/**',
+      'stores/*/index.{ts,js,mjs,mts}',
+      'stores/**',
     ],
   },
   experimental: {
