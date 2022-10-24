@@ -3,6 +3,9 @@ import Components from 'unplugin-vue-components/vite'
 import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
 export default defineNuxtConfig({
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
   runtimeConfig: {
     cookieName: process.env.COOKIE_NAME || '__session',
     cookieSecret: process.env.COOKIE_SECRET || 'secret',
