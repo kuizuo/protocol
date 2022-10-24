@@ -42,6 +42,7 @@ export const useUserStore = defineStore('user', () => {
 
     info.value = {} as API.User
     token.value = ''
+    courseList.value = []
     router.push({ path: '/login' })
   }
 
@@ -65,7 +66,6 @@ export const useUserStore = defineStore('user', () => {
     strategies: [
       {
         key: `${namespace}-user`,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         storage: process.client ? localStorage : null,
       },

@@ -3,7 +3,8 @@
   "compilerOptions": {
     "strict": true,
     "types": [
-      "naive-ui/volar"
+      "naive-ui/volar",
+      "pinia-plugin-persist"
     ]
   }
 }

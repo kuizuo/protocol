@@ -14,7 +14,6 @@ const http = axios.create({
 http.interceptors.request.use(
   (config) => {
     if (useUserStore().token) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
       config.headers.Authorization = useUserStore().token
     }
