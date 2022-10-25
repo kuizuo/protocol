@@ -130,7 +130,7 @@ export class Cx {
     })
 
     const { data } = await this.http.get<CX.Activity.Data>(`https://mobilelearn.chaoxing.com/v2/apis/active/student/activelist?${query}`)
-    return data.data.activeList.map(a => ({ course, ...a })) ?? []
+    return data.data.activeList ?? []
   }
 
   async preSign(course: CX.Course.Item, activity: CX.Activity.Item) {
@@ -215,7 +215,9 @@ export class Cx {
   async getAllActivity(type?: number, status?: number) {
     const courseList = await this.getCourseList()
 
-    const activityArr = await mapLimit(courseList, 5, async (course: CX.Course.Item) => await this.getActivity(course))
+    const activityArr = await mapLimit(courseList, 5, async (course: CX.Course.Item) => {
+      return (await this.getActivity(course)).map(a => ({ course, ...a }))
+    })
 
     return activityArr.flat(1)
       .filter(activity => (type ? activity.type === type : true) && (status ? activity.status === status : true))
@@ -235,7 +237,7 @@ export class Cx {
     for await (const activity of signActivityList) {
       await this.preSign(course, activity)
       if (activity.type === ActivityTypeEnum.Sign) {
-        await this.preSign(activity.course, activity)
+        await this.preSign(course, activity)
         // console.log('预签成功')
 
         let result = ''

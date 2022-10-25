@@ -1,5 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { useMessage } from 'naive-ui'
+import type { AxiosResponse } from 'axios'
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter()
@@ -49,8 +50,13 @@ export const useUserStore = defineStore('user', () => {
     courseList.value = data
   }
 
+  async function getActivityList(course: API.Course) {
+    const { data } = await http.post<API.Activity[], AxiosResponse<API.Activity[]>, API.Course>('/cx/activityList', course)
+    return data
+  }
+
   async function signByCourse(course: API.Course) {
-    const { data } = await http.post<{ activity: API.Activity; result: string }[]>('/cx/signByCourse', course)
+    const { data } = await http.post<{ activity: API.Activity; result: string }[], AxiosResponse<{ activity: API.Activity; result: string }[]>, API.Course>('/cx/signByCourse', course)
 
     if (data.length === 0) {
       message.warning(`${course.name} 无签到活动`)
@@ -83,6 +89,7 @@ export const useUserStore = defineStore('user', () => {
     login,
     logout,
     getCourseList,
+    getActivityList,
     sign,
     signByCourse,
     signBgTask,
