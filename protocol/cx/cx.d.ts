@@ -9,7 +9,7 @@ declare namespace CX {
     fid?: string
     avatar?: string
     siteName?: string
-  };
+  }
 
 
   interface LoginResult {
@@ -28,10 +28,7 @@ declare namespace CX {
     status: string
 
     // error
-    result: boolean
-    opacPwd: boolean
     errorMsg: string
-    status: string
   }
 
   namespace Course {
@@ -62,6 +59,7 @@ declare namespace CX {
   namespace Activity {
 
     interface Item {
+      activityList: any
       userStatus: number
       nameTwo: string
       otherId: string
@@ -79,6 +77,8 @@ declare namespace CX {
       endTime: number
       status: number
       nameFour: string
+
+      course?: Course.Item
     }
 
     interface Data {
@@ -93,5 +93,10 @@ declare namespace CX {
       }
       errorMsg: any
     }
+
+    interface Location {
+      latitude: string
+      longitude: string
+    } 
   }
 }

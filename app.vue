@@ -23,6 +23,9 @@ useHead({
   ],
   meta: [
     {
+      name: 'description', contetn: config.description,
+    },
+    {
       name: 'referrer', content: 'no-referrer',
     },
   ],

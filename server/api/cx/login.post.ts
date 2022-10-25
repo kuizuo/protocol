@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { Cx } from '~/protocol/cx/cx.class'
-import { CXMap } from '~/protocol/cx/cx.store'
+import { CXMap, Cx } from '~~/protocol/cx'
 
 const config = useRuntimeConfig()
 

@@ -5,16 +5,18 @@ specifiers:
   '@iconify-json/ri': ^1.1.3
   '@iconify-json/twemoji': ^1.1.5
   '@kuizuo/eslint-config': ^1.0.0
-  '@kuizuo/http': ^0.3.1
-  '@kuizuo/utils': ^0.1.3
+  '@kuizuo/http': ^0.3.2
+  '@kuizuo/utils': ^0.2.0
   '@nuxt/content': ^2.1.1
   '@nuxt/test-utils-edge': npm:@nuxt/test-utils-edge@latest
   '@nuxtjs/color-mode': ^3.1.4
   '@pinia/nuxt': ^0.4.1
+  '@types/async': ^3.2.15
   '@types/cheerio': ^0.22.31
   '@types/jsonwebtoken': ^8.5.9
   '@unocss/nuxt': ^0.45.13
   '@vueuse/nuxt': ^9.1.1
+  async: ^3.2.4
   cheerio: 0.22.0
   eslint: ^8.23.0
   jsonwebtoken: ^8.5.1
@@ -32,16 +34,18 @@ devDependencies:
   '@iconify-json/ri': 1.1.3
   '@iconify-json/twemoji': 1.1.5
   '@kuizuo/eslint-config': 1.0.0_z4bbprzjrhnsfa24uvmcbu7f5q
-  '@kuizuo/http': 0.3.1
-  '@kuizuo/utils': 0.1.3
+  '@kuizuo/http': 0.3.2
+  '@kuizuo/utils': 0.2.0
   '@nuxt/content': 2.1.1
-  '@nuxt/test-utils-edge': 3.0.0-rc.13-27776700.5a88510_vue@3.2.41
+  '@nuxt/test-utils-edge': 3.0.0-rc.13-27778165.452766e_vue@3.2.41
   '@nuxtjs/color-mode': 3.1.8
   '@pinia/nuxt': 0.4.3_l7r24p6nevbtlimqmqcwa3ouhu
+  '@types/async': 3.2.15
   '@types/cheerio': 0.22.31
   '@types/jsonwebtoken': 8.5.9
   '@unocss/nuxt': 0.45.29_vite@3.1.8+webpack@5.74.0
   '@vueuse/nuxt': 9.3.0_27auguwjqywynd6k6gareb36sm
+  async: 3.2.4
   cheerio: 0.22.0
   eslint: 8.25.0
   jsonwebtoken: 8.5.1
@@ -652,8 +656,8 @@ packages:
       - typescript
     dev: true
 
-  /@kuizuo/http/0.3.1:
-    resolution: {integrity: sha512-zaXmw4xGuo3oGAR0DivZcNUtsvlDctLM3gKf5c15YmlFaMFIccK39gK0PUi73P010mR3hGXNi0m+VLJhQxV7Tg==}
+  /@kuizuo/http/0.3.2:
+    resolution: {integrity: sha512-NT3Ay2nGOXQXhO5JQhpuiOucE2QZAvBz7fvw7wQOT/mTnGRlwIekoCp2jty922ZEQDVnRUP6ZP1/VAvP4DWC6g==}
     dependencies:
       axios: 1.1.3
       axios-retry: 3.3.1
@@ -666,8 +670,8 @@ packages:
       - undici
     dev: true
 
-  /@kuizuo/utils/0.1.3:
-    resolution: {integrity: sha512-8UPZoVKBJO41UXiDzMtnKAfWasTrooqlHEAxagEor6Q2mMnz+THc1GO2xJJ/6jndaYeWONG0G9AXgN0l8Fx76Q==}
+  /@kuizuo/utils/0.2.0:
+    resolution: {integrity: sha512-/MUx+4lQ6vwz11pDMYFAekXtSqs6KQoYTuC96h+nrQ8Rl6grTsNTo2/LWJ+uQOS22Nw7jJHJnklFgDl5A+9e6Q==}
     dependencies:
       '@types/crypto-js': 4.1.1
       '@types/node-rsa': 1.1.1
@@ -771,11 +775,11 @@ packages:
     resolution: {integrity: sha512-YBI/6o2EBz02tdEJRBK8xkt3zvOFOWlLBf7WKYGBsSYSRtjjgrqPe2skp6VLLmKx5WbHHDNcW+6oACaurxGzeA==}
     dev: true
 
-  /@nuxt/kit-edge/3.0.0-rc.13-27776700.5a88510:
-    resolution: {integrity: sha512-+FayTCTk6iPacTkI3PqUUdQBC9WDhS5VBfnC5r6EUKH2pL55ZEHKU8Pv+56Uu3NOTojQz4fcq2DyFKJlyNaVhA==}
+  /@nuxt/kit-edge/3.0.0-rc.13-27778165.452766e:
+    resolution: {integrity: sha512-JiVWwVyIWbE/h3zrTgnBDrz3lofYN5oYkmENhM6DW2lFfR08PHkdnicAUv/gO5mvIt1m3X1NFDoSWHQuI3cWlg==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.13-27776700.5a88510
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.13-27778165.452766e
       c12: 0.2.13
       consola: 2.15.3
       defu: 6.1.0
@@ -849,8 +853,8 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxt/schema-edge/3.0.0-rc.13-27776700.5a88510:
-    resolution: {integrity: sha512-R6qkMxXiJvkhv8wFqNv1f1yTN7X9ROBgHLbmNSowNmWZPAncV5jKFaFNbeF5NCQEG6sd5aORNHSNs7nMPdIsLw==}
+  /@nuxt/schema-edge/3.0.0-rc.13-27778165.452766e:
+    resolution: {integrity: sha512-vO11H194CvjNt2+xMGeKTSS+DNMA5+BIG0vwzr3w9gI0cRaXt7lMVzyrA3BmzNeF+c8vPcRx4dIwq2Uz/y5U0w==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     dependencies:
       c12: 0.2.13
@@ -934,14 +938,14 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxt/test-utils-edge/3.0.0-rc.13-27776700.5a88510_vue@3.2.41:
-    resolution: {integrity: sha512-uxfu3jJ3fCfBJ91173W7cthfql+Kzf/TnkBFENKeSU065b9XWHBS68x5C7vBewvAGhjqZU1VyvqhGQ6Y5Xo7fw==}
+  /@nuxt/test-utils-edge/3.0.0-rc.13-27778165.452766e_vue@3.2.41:
+    resolution: {integrity: sha512-dwlgWllOIyKdNfUoX9RCWTGVjPijs6Zoi5r3N49toFHEkPE2GoNAXVezif8AseJs92Ck8JziZH6U8SzFOvnQrg==}
     engines: {node: ^14.16.0 || ^16.10.0 || ^17.0.0 || ^18.0.0 || ^19.0.0}
     peerDependencies:
       vue: ^3.2.41
     dependencies:
-      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.13-27776700.5a88510
-      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.13-27776700.5a88510
+      '@nuxt/kit': /@nuxt/kit-edge/3.0.0-rc.13-27778165.452766e
+      '@nuxt/schema': /@nuxt/schema-edge/3.0.0-rc.13-27778165.452766e
       consola: 2.15.3
       defu: 6.1.0
       execa: 6.1.0
@@ -1164,6 +1168,10 @@ packages:
   /@trysound/sax/0.2.0:
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
     engines: {node: '>=10.13.0'}
+    dev: true
+
+  /@types/async/3.2.15:
+    resolution: {integrity: sha512-PAmPfzvFA31mRoqZyTVsgJMsvbynR429UTTxhmfsUCrWGh3/fxOrzqBtaTPJsn4UtzTv4Vb0+/O7CARWb69N4g==}
     dev: true
 
   /@types/chai-subset/1.3.3:

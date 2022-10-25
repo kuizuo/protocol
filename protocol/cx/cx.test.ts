@@ -22,19 +22,33 @@ describe('cx', async () => {
     console.log('avatar', cx.user.avatar)
   })
 
-  it('getCourseList', async () => {
+  it.skip('getCourseList', async () => {
     await cx.getCourseList()
 
     console.log(cx.courseList.length)
   })
 
-  it('getActivity', async () => {
-    activityList = await cx.getActivity(cx.courseList.find(c => c.name === '愧怍课程'))
-    console.log(activityList)
+  it.skip('getActivity', async () => {
+    const course = cx.courseList.find(c => c.name === '愧怍课程')!
+    activityList = await cx.getActivity(course)
+    console.log(activityList.length)
+  })
+
+  it.skip('signGeneral', async () => {
+    const result = await cx.signGeneral(activityList[0])
+    console.log(result)
+  })
+
+  it.skip('getAllSignActivity', async () => {
+    await cx.getAllActivity()
+  })
+
+  it.skip('getSignActivityList', async () => {
+    const signActivity = await cx.getSignActivityList()
+    console.log(signActivity.length)
   })
 
   it('sign', async () => {
-    const result = await cx.sign(activityList[0])
-    console.log(result)
+    await cx.sign()
   })
 })

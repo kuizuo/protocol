@@ -1,19 +1,41 @@
-import querystring from 'querystring'
 import { qsParse, qsStringify, timestamp } from '@kuizuo/utils'
 import cheerio from 'cheerio'
 import { AHttp } from '@kuizuo/http'
+import { mapLimit } from 'async'
+
+export enum ActivityStatusEnum {
+  Doing = 1,
+  Done = 2,
+}
+
+export enum ActivityTypeEnum {
+  Sign = 2, // 签到
+  Answer = 4, // 抢答
+  Talk = 5, // 主题谈论
+  Question = 6, // 投票
+  Homework = 19,
+}
+
+export enum SignTypeEnum {
+  General = '0', // 普通签到/拍照签到
+  QrCode = '2', // 二维码签到
+  Gesture = '3', // 手势签到
+  Location = '4', // 位置签到
+  Code = '5', // 签到码签到
+}
+
 export class Cx {
   public http: AHttp
   public user: CX.User
   public courseList: CX.Course.Item[] = []
 
   constructor(user: CX.User) {
-    this.http = new AHttp({ withCookie: true, timeout: 10 * 1000 })
+    this.http = new AHttp({ withCookie: true, unauthorized: true, timeout: 10 * 1000 })
     this.user = user
   }
 
   async login(): Promise<string> {
-    if (/^(?:(?:\+|00)86)?1[3-9]\d{9}$/.test(this.user.username)) {
+    if (/^1[3-9]\d{9}$/.test(this.user.username)) {
       const query = qsStringify({
         name: this.user.username,
         pwd: encodeURIComponent(this.user.password),
@@ -108,23 +130,27 @@ export class Cx {
     })
 
     const { data } = await this.http.get<CX.Activity.Data>(`https://mobilelearn.chaoxing.com/v2/apis/active/student/activelist?${query}`)
-
-    return data.data.activeList ?? []
+    return data.data.activeList.map(a => ({ course, ...a })) ?? []
   }
 
-  async sign(activity: CX.Activity.Item) {
-    // 位置 https://api.map.baidu.com/lbsapi/getpoint/index.html
-    const query = querystring.stringify ({
-      activeId: activity.id,
-      uid: this.user.userid,
-      clientip: '',
-      latitude: '-1',
-      longitude: '-1',
+  async preSign(course: CX.Course.Item, activity: CX.Activity.Item) {
+    const query = qsStringify({
+      courseId: course.courseId,
+      classId: course.classId,
+      activePrimaryId: activity.id,
+      general: '1',
+      sys: '1',
+      ls: '1',
       appType: '15',
-      fid: this.user.fid,
-      name: activity.nameOne,
-    }, '', '', { encodeURIComponent: str => str })
-    const { data } = (await this.http.get(`https://mobilelearn.chaoxing.com/pptSign/stuSignajax?${query}`))
+      tid: '',
+      uid: this.user.userid,
+      ut: 's',
+    })
+    await this.http.get(`https://mobilelearn.chaoxing.com/newsign/preSign?${query}`)
+  }
+
+  async pptSign(query: string) {
+    const { data } = await this.http.get(`https://mobilelearn.chaoxing.com/pptSign/stuSignajax?${query}`)
 
     if (data === 'success')
       return '签到成功'
@@ -132,11 +158,99 @@ export class Cx {
       return data
   }
 
-  async signQrCode() {
+  async signGeneral(activity: CX.Activity.Item) {
+    const query = qsStringify({
+      activeId: activity.id,
+      uid: this.user.userid,
+      clientip: '',
+      latitude: '-1',
+      longitude: '-1',
+      appType: '15',
+      fid: this.user.fid,
+      name: this.user.realname,
+    }, '', '', { encodeURIComponent: s => s })
 
+    return this.pptSign(query)
   }
 
-  async signAll() {
+  async signLocation(activity: CX.Activity.Item,
+    location: CX.Activity.Location = {
+      latitude: '-1',
+      longitude: '-1',
+    }) {
+    // 位置 https://api.map.baidu.com/lbsapi/getpoint/index.html
+    const query = qsStringify({
+      activeId: activity.id,
+      address: '',
+      uid: this.user.userid,
+      clientip: '',
+      latitude: location.latitude,
+      longitude: location.longitude,
+      appType: '15',
+      fid: this.user.fid,
+      name: this.user.realname,
+      ifTiJiao: 1,
+    }, '', '', { encodeURIComponent: s => s })
 
+    return this.pptSign(query)
+  }
+
+  async signQrCode(activity: CX.Activity.Item, enc: string) {
+    const query = qsStringify({
+      enc,
+      activeId: activity.id,
+      uid: this.user.userid,
+      clientip: '',
+      useragent: '',
+      latitude: '-1',
+      longitude: '-1',
+      fid: this.user.fid,
+      appType: '15',
+      name: this.user.realname,
+    }, '', '', { encodeURIComponent: s => s })
+
+    return this.pptSign(query)
+  }
+
+  async getAllActivity(type?: number, status?: number) {
+    const courseList = await this.getCourseList()
+
+    const activityArr = await mapLimit(courseList, 5, async (course: CX.Course.Item) => await this.getActivity(course))
+
+    return activityArr.flat(1)
+      .filter(activity => (type ? activity.type === type : true) && (status ? activity.status === status : true))
+  }
+
+  async getSignActivityList() {
+    return this.getAllActivity(ActivityTypeEnum.Sign, ActivityStatusEnum.Doing)
+  }
+
+  async sign() {
+    const signActivityList = await this.getSignActivityList()
+
+    const signResult = []
+    for await (const activity of signActivityList) {
+      if (activity.type === ActivityTypeEnum.Sign) {
+        await this.preSign(activity.course, activity)
+        console.log('预签成功')
+
+        let result = ''
+        if ([SignTypeEnum.General, SignTypeEnum.Gesture, SignTypeEnum.Code].includes(activity.otherId as SignTypeEnum)) {
+          result = await this.signGeneral(activity)
+        }
+        else if (activity.otherId === SignTypeEnum.QrCode) {
+          // await this.signQrCode(activity, activity.enc)
+        }
+        else if (activity.otherId === SignTypeEnum.Location) {
+          result = await this.signLocation(activity)
+        }
+
+        signResult.push({
+          activity,
+          result,
+        })
+      }
+    }
+    return signResult
   }
 }

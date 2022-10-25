@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import pkg from '~/package.json'
+const appConfig = useAppConfig()
 </script>
 
 <template>
   <nav px-8 py-4 border="b gray-400/10" flex="~ gap-2 " items-center>
     <RouterLink to="/" flex="~ gap-2" items-center>
       <img src="/logo.png" h-10>
-      <div font-sans mr-6 leading-1em text-left text-sm capitalize>
-        {{ pkg.repository.name }}
+      <div font-sans ml-2 mr-6 leading-1em text-left text-sm capitalize>
+        {{ appConfig.title }}
       </div>
     </RouterLink>
 

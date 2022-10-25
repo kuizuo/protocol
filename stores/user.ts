@@ -29,13 +29,8 @@ export const useUserStore = defineStore('user', () => {
 
   async function logout() {
     if (token.value) {
-      try {
-        await http.get('/cx/logout')
-        message.success('退出成功')
-      }
-      catch (error: any) {
-        console.log(`logout error:${error.toString()}`)
-      }
+      await http.get('/cx/logout')
+      message.success('退出成功')
     }
 
     info.value = {} as API.User
@@ -45,18 +40,17 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function getCourseList() {
-    const { data } = (await http.get('/cx/courseList'))
+    const { data } = await http.get<API.Course[]>('/cx/courseList')
     courseList.value = data
   }
 
-  async function autoSign() {
-    const { data } = (await http.get('/cx/autoSign'))
-
+  async function sign() {
+    const { data } = await http.get<API.Activity[]>('/cx/sign')
     return data
   }
 
-  async function sign() {
-    const { data } = (await http.get('/cx/sign'))
+  async function signBgTask() {
+    const { data } = await http.get('/cx/signBgTask')
 
     return data
   }
@@ -69,8 +63,8 @@ export const useUserStore = defineStore('user', () => {
     login,
     logout,
     getCourseList,
-    autoSign,
     sign,
+    signBgTask,
   }
 }, {
   persist: {
