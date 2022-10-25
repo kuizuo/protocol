@@ -4,17 +4,12 @@ import { useMessage } from 'naive-ui'
 const userStore = useUserStore()
 const message = useMessage()
 
-const logStore = useLogStore()
 let loading = $ref(false)
 
 const sign = async () => {
   loading = true
   try {
-    const data = await userStore.sign()
-
-    data.forEach((d) => {
-      logStore.log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`)
-    })
+    await userStore.sign()
   }
   catch (error) { }
   finally {

@@ -225,6 +225,40 @@ export class Cx {
     return this.getAllActivity(ActivityTypeEnum.Sign, ActivityStatusEnum.Doing)
   }
 
+  async signByCourse(course: CX.Course.Item) {
+    const activityList = await this.getActivity(course)
+
+    const signActivityList = activityList.filter(activity => activity.type === ActivityTypeEnum.Sign && activity.status === ActivityStatusEnum.Doing)
+
+    const signResult = []
+
+    for await (const activity of signActivityList) {
+      await this.preSign(course, activity)
+      if (activity.type === ActivityTypeEnum.Sign) {
+        await this.preSign(activity.course, activity)
+        // console.log('预签成功')
+
+        let result = ''
+        if ([SignTypeEnum.General, SignTypeEnum.Gesture, SignTypeEnum.Code].includes(activity.otherId as SignTypeEnum)) {
+          result = await this.signGeneral(activity)
+        }
+        else if (activity.otherId === SignTypeEnum.QrCode) {
+          // await this.signQrCode(activity, activity.enc)
+        }
+        else if (activity.otherId === SignTypeEnum.Location) {
+          result = await this.signLocation(activity)
+        }
+
+        signResult.push({
+          activity,
+          result,
+        })
+      }
+    }
+
+    return signResult
+  }
+
   async sign() {
     const signActivityList = await this.getSignActivityList()
 

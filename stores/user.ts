@@ -49,9 +49,24 @@ export const useUserStore = defineStore('user', () => {
     courseList.value = data
   }
 
+  async function signByCourse(course: API.Course) {
+    const { data } = await http.post<{ activity: API.Activity; result: string }[]>('/cx/signByCourse', course)
+
+    if (data.length === 0) {
+      message.warning(`${course.name} 无签到活动`)
+      logStore.log(`${course.name} 无签到活动`)
+    }
+    else {
+      data.forEach(d => logStore.log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`))
+      message.success(`共有${data.length}个签到活动`)
+    }
+
+    return data
+  }
+
   async function sign() {
     const { data } = await http.get<{ activity: API.Activity; result: string }[]>('/cx/sign')
-    return data
+    data.forEach(d => logStore.log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`))
   }
 
   async function signBgTask() {
@@ -69,6 +84,7 @@ export const useUserStore = defineStore('user', () => {
     logout,
     getCourseList,
     sign,
+    signByCourse,
     signBgTask,
   }
 }, {
