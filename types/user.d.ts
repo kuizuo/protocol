@@ -5,5 +5,7 @@ declare namespace API {
 
   interface Course extends CX.Course.Item {}
 
-  interface Activity extends CX.Activity.Item {}
+  interface Activity extends CX.Activity.Item {
+    result?: string
+  }
 }

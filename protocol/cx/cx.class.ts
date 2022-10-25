@@ -232,7 +232,7 @@ export class Cx {
     for await (const activity of signActivityList) {
       if (activity.type === ActivityTypeEnum.Sign) {
         await this.preSign(activity.course, activity)
-        console.log('预签成功')
+        // console.log('预签成功')
 
         let result = ''
         if ([SignTypeEnum.General, SignTypeEnum.Gesture, SignTypeEnum.Code].includes(activity.otherId as SignTypeEnum)) {

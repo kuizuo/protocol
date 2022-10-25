@@ -9,6 +9,8 @@ export const useUserStore = defineStore('user', () => {
   const loading = ref(false)
   const message = useMessage()
 
+  const logStore = useLogStore()
+
   async function login(form: API.Login) {
     loading.value = true
 
@@ -16,6 +18,7 @@ export const useUserStore = defineStore('user', () => {
       const { data } = await http.post('/cx/login', form)
 
       message.success('登录成功')
+      logStore.log('登录成功')
       info.value = data.info
       token.value = data.token
       router.push({ path: '/' })
@@ -33,6 +36,8 @@ export const useUserStore = defineStore('user', () => {
       message.success('退出成功')
     }
 
+    logStore.log('退出成功')
+
     info.value = {} as API.User
     token.value = ''
     courseList.value = []
@@ -45,7 +50,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   async function sign() {
-    const { data } = await http.get<API.Activity[]>('/cx/sign')
+    const { data } = await http.get<{ activity: API.Activity; result: string }[]>('/cx/sign')
     return data
   }
 

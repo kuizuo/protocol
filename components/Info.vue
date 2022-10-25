@@ -4,7 +4,7 @@ const info = $computed(() => userStore.info)
 </script>
 
 <template>
-  <div flex justify-center items-center>
+  <div flex>
     <n-avatar :src="info?.avatar" />
     <div flex justify-center items-center gap-2 ml-2>
       <span>{{ info?.siteName }}</span>

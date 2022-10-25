@@ -8,8 +8,10 @@ definePageMeta({
   <div>
     <Suspense>
       <div flex flex-col justify-center items-center>
-        <Info />
-        <Sign />
+        <div min-w-sm>
+          <Info />
+          <Sign />
+        </div>
         <CourseList />
       </div>
       <template #fallback>

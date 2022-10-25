@@ -3,18 +3,22 @@ import { useMessage } from 'naive-ui'
 
 const userStore = useUserStore()
 const message = useMessage()
-let loadding = $ref(false)
 
-let signRecord = $ref<API.Activity[]>([])
+const logStore = useLogStore()
+let loading = $ref(false)
+
 const sign = async () => {
-  loadding = true
+  loading = true
   try {
-    signRecord = await userStore.sign()
-    console.log('signRecord', signRecord)
+    const data = await userStore.sign()
+
+    data.forEach((d) => {
+      logStore.log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`)
+    })
   }
   catch (error) { }
   finally {
-    loadding = false
+    loading = false
   }
 }
 
@@ -29,14 +33,14 @@ const signBgTask = () => {
 <template>
   <div>
     <n-space mt-2>
-      <n-button type="info" @click="sign">
+      <n-button type="info" :loading="loading" @click="sign">
         手动签到
       </n-button>
       <n-button type="info" @click="signBgTask">
         后台签到
       </n-button>
     </n-space>
-    <div />
+    <Log />
   </div>
 </template>
 
