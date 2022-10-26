@@ -1,6 +1,7 @@
+import { USER_TOKEN } from '~~/utils/constant'
+
 export const useAuth = () => {
-  // FIXME: replace __session to custom key
-  const logged = useCookie('__session')
+  const logged = useCookie(USER_TOKEN)
 
   return {
     logged,

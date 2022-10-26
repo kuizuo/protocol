@@ -7,10 +7,6 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
   },
   runtimeConfig: {
-    cookieName: process.env.COOKIE_NAME || '__session',
-    cookieSecret: process.env.COOKIE_SECRET || 'secret',
-    cookieExpires: parseInt(process.env.COOKIE_REMEMBER_ME_EXPIRES || '86400000', 10), // 1 day
-    cookieRememberMeExpires: parseInt(process.env.COOKIE_REMEMBER_ME_EXPIRES || '86400000', 10), // 7 days
     jwtSecret: process.env.JWT_SECRET || 'secret',
   },
   modules: [
@@ -19,8 +15,13 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/content',
+    'nuxt-icon',
   ],
   content: {
+    documentDriven: true,
+    markdown: {
+      mdc: true,
+    },
     highlight: {
       theme: {
         default: 'github-light',

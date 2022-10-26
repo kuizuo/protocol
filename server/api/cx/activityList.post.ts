@@ -1,7 +1,5 @@
-import type { Cx } from '~~/protocol/cx'
-
 export default defineEventHandler(async (event) => {
-  const cx = event.context.cx as Cx
+  const cx = event.context.cx
 
   const course = await useBody<API.Course>(event)
 

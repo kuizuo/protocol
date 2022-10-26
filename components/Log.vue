@@ -21,10 +21,20 @@ onMounted(() => {
     <template #header-extra>
       <n-switch v-model:value="logStore.showLog" />
     </template>
-    <n-log v-show="logStore.showLog" ref="logInstRef" class="text-left" :rows="10" :log="logList.join('\n')" trim />
+    <Transition>
+      <n-log v-show="logStore.showLog" ref="logInstRef" class="text-left" :rows="10" :log="logList.join('\n')" trim />
+    </Transition>
   </n-card>
 </template>
 
 <style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
 
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>

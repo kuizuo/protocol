@@ -6,7 +6,8 @@ import { darkTheme, dateZhCN, lightTheme, zhCN } from 'naive-ui'
 
 import type { GlobalTheme } from 'naive-ui'
 
-const config = useAppConfig()
+const appConfig = useAppConfig()
+
 const theme = ref<GlobalTheme | null>(darkTheme)
 const colorMode = useColorMode()
 
@@ -15,7 +16,7 @@ watchEffect(() => {
 })
 
 useHead({
-  title: config.title,
+  title: appConfig.title ?? '',
   link: [
     {
       rel: 'icon', type: 'image/png', href: '/logo.png',
@@ -23,7 +24,7 @@ useHead({
   ],
   meta: [
     {
-      name: 'description', contetn: config.description,
+      name: 'description', contetn: appConfig.description ?? '',
     },
     {
       name: 'referrer', content: 'no-referrer',
@@ -56,13 +57,27 @@ html.dark {
   color: white;
 }
 
-.page-enter-active,
+.page-enter-active {
+  transition: all 0.1s ease-out;
+}
 .page-leave-active {
-  transition: all 0.4s;
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .page-enter-from,
 .page-leave-to {
+  transform: translateY(20px);
   opacity: 0;
-  filter: blur(1rem);
+}
+
+.layout-enter-active {
+  transition: all 0.1s ease-out;
+}
+.layout-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.layout-enter-from,
+.layout-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
 }
 </style>

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { CXMap, Cx } from '~~/protocol/cx'
+import { USER_TOKEN } from '~~/utils/constant'
 
 const config = useRuntimeConfig()
 
@@ -15,7 +16,7 @@ export default defineEventHandler(async (event) => {
   CXMap.set(cx.user.username, cx)
   const token = jwt.sign(cx.user, config.jwtSecret, { expiresIn: '1d' })
 
-  setCookie(event, config.cookieName, token, { maxAge: 60 * 60 * 24 })
+  setCookie(event, USER_TOKEN, token, { maxAge: 24 * 60 * 60 })
 
   return {
     code: 200,

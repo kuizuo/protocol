@@ -1,15 +1,8 @@
-declare module '@nuxt/schema' {
-  interface AppConfig {
-    title: string;
-    description?: string
-  }
+import { Cx } from 'protocol/cx/cx.class'
 
-  interface RuntimeConfig {
-    cookieName: string;
-    cookieSecret: string;
-    cookieExpires: number
-    cookieRememberMeExpires: number
-    jwtSecret: string
+declare module 'h3' {
+  interface H3EventContext {
+    cx: Cx
   }
 }
 

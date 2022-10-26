@@ -2,12 +2,12 @@ import jwt from 'jsonwebtoken'
 import { CXMap, Cx } from '~~/protocol/cx'
 
 const config = useRuntimeConfig()
-const exclude = ['/api/cx/login', '/api/cx/logout', '/api']
+const exclude = ['/api/cx/login', '/api/cx/logout', '/api', '_content']
 
 export default defineEventHandler(async (event) => {
   const { req, context } = event
   try {
-    if (!req.url?.startsWith('/api'))
+    if (!req.url?.startsWith('/api') || req.url?.startsWith('/api/_content'))
       return
 
     if (exclude.includes(req.url))

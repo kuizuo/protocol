@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import pkg from '~/package.json'
+const appConfig = useAppConfig()
 </script>
 
 <template>
@@ -20,12 +21,15 @@ import pkg from '~/package.json'
           <a class="flex items-center gap-1 text-gray-700 hover:text-gray-900 dark:(text-gray-200 hover:text-gray-100) ">
             <i i-ri:building-2-line />
             <p class="text-xs font-semibold self-end">构建于: Protocol</p>
+            <a href="https://v3.nuxtjs.org/" class="block bg-green-500 rounded px-1 py-0.5 text-white text-xs">
+              nuxt3@{{ pkg.devDependencies.nuxt }}
+            </a>
           </a>
         </div>
         <div flex-auto />
         <div class="flex items-center gap-3">
-          <a v-if="pkg.author.qq" i-ri-qq-line :href="pkg.author.qq" />
-          <a v-if="pkg.author.wx" i-ri-wechat-2-line :href="pkg.author.wx" />
+          <a v-if="appConfig.author.qq" i-ri-qq-line :href="appConfig.author.qq" target="_blank" />
+          <a v-if="appConfig.author.wx" i-ri-wechat-2-line :href="appConfig.author.wx" target="_blank" />
           <a i-ri-github-line :href="pkg.repository.url" target="_blank" />
         </div>
       </div>

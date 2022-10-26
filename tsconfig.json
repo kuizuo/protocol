@@ -2,8 +2,11 @@
   "extends": "./.nuxt/tsconfig.json",
   "compilerOptions": {
     "strict": true,
+    "skipLibCheck": true,
     "types": [
       "naive-ui/volar",
+      "@vueuse/nuxt",
+      "@pinia/nuxt",
       "pinia-plugin-persist"
     ]
   }

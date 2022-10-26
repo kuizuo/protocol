@@ -1,5 +1,6 @@
 export default defineEventHandler(async (event) => {
   const cx = event.context.cx
+
   const courseList = await cx?.getCourseList()
 
   return {

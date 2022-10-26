@@ -6,9 +6,7 @@
   "author": {
     "url": "https://kuizuo.cn",
     "email": "hi@kuizuo.cn",
-    "name": "Kuizuo",
-    "qq": "https://im.qq.com/",
-    "wx": "https://wx.qq.com/"
+    "name": "Kuizuo"
   },
   "license": "MIT",
   "repository": {
@@ -47,6 +45,7 @@
     "jsonwebtoken": "^8.5.1",
     "naive-ui": "^2.33.3",
     "nuxt": "^3.0.0-rc.12",
+    "nuxt-icon": "^0.1.7",
     "pinia": "^2.0.21",
     "pinia-plugin-persistedstate": "^2.3.0",
     "typescript": "^4.8.2",
