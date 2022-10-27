@@ -1,6 +1,7 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { useMessage } from 'naive-ui'
 import type { AxiosResponse } from 'axios'
+import { USER_TOKEN } from '~~/utils/constant'
 
 export const useUserStore = defineStore('user', () => {
   const router = useRouter()
@@ -18,8 +19,7 @@ export const useUserStore = defineStore('user', () => {
     try {
       const { data } = await http.post('/cx/login', form)
 
-      message.success('登录成功')
-      logStore.log('登录成功')
+      logStore.log('登录成功', 'success')
       info.value = data.info
       token.value = data.token
       router.push({ path: '/' })
@@ -42,6 +42,8 @@ export const useUserStore = defineStore('user', () => {
     info.value = {} as API.User
     token.value = ''
     courseList.value = []
+    const cookie = useCookie(USER_TOKEN)
+    cookie.value = ''
     router.push({ path: '/login' })
   }
 

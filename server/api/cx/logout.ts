@@ -1,4 +1,4 @@
-import { CXMap } from '~~/protocol/cx'
+import { CXMap } from '~~/server/protocol/cx'
 
 const config = useRuntimeConfig()
 

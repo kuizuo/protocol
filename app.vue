@@ -24,7 +24,7 @@ useHead({
   ],
   meta: [
     {
-      name: 'description', contetn: appConfig.description ?? '',
+      name: 'description', content: appConfig.description ?? '',
     },
     {
       name: 'referrer', content: 'no-referrer',

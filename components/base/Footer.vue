@@ -21,7 +21,7 @@ const appConfig = useAppConfig()
           <a class="flex items-center gap-1 text-gray-700 hover:text-gray-900 dark:(text-gray-200 hover:text-gray-100) ">
             <i i-ri:building-2-line />
             <p class="text-xs font-semibold self-end">构建于: Protocol</p>
-            <a href="https://v3.nuxtjs.org/" class="block bg-green-500 rounded px-1 py-0.5 text-white text-xs">
+            <a href="https://v3.nuxtjs.org/" class="block bg-green-500 rounded px-1 py-0.5 text-white text-xs" target="_blank">
               nuxt3@{{ pkg.devDependencies.nuxt }}
             </a>
           </a>

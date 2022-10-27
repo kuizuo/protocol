@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken'
-import { CXMap, Cx } from '~~/protocol/cx'
+import { CXMap, Cx } from '~~/server/protocol/cx'
 
 const config = useRuntimeConfig()
-const exclude = ['/api/cx/login', '/api/cx/logout', '/api', '_content']
+const exclude = ['/api/cx/login', '/api/cx/logout', '/api']
 
 export default defineEventHandler(async (event) => {
   const { req, context } = event

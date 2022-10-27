@@ -9,10 +9,6 @@ const form = ref({
 async function submit() {
   await userStore.login(form.value)
 }
-
-definePageMeta({
-  middleware: ['guest'],
-})
 </script>
 
 <template>
@@ -38,6 +34,8 @@ definePageMeta({
           show-password-on="mousedown"
           placeholder="密码"
           :maxlength="16"
+          :disabled="userStore.loading"
+          @keyup.enter="submit()"
         >
           <template #prefix>
             <i i-ri:lock-2-line />
