@@ -9,16 +9,3 @@ export default defineAppConfig({
     wx: 'https://wx.qq.com/',
   },
 })
-
-declare module '@nuxt/schema' {
-  interface AppConfigInput {
-    title: string
-    description: string
-    author: {
-      name: string
-      link: string
-      qq: string
-      wx: string
-    }
-  }
-}
