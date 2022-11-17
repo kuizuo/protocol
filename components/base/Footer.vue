@@ -24,9 +24,6 @@ const { author } = useAppConfig()
             <a :href="pkg.repository.url" target="_blank" class="text-xs font-semibold self-end">
               构建于: Protocol
             </a>
-            <a href="https://v3.nuxtjs.org/" class="block bg-green-500 rounded px-1 py-0.5 text-white text-xs" target="_blank">
-              nuxt3@{{ pkg.devDependencies.nuxt }}
-            </a>
           </a>
         </div>
         <div flex-auto />

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Logo mb-6 />
+    <!-- <Logo mb-6 /> -->
     <Suspense>
       <Demo />
       <template #fallback>

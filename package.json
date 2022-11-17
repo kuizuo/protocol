@@ -1,9 +1,9 @@
 {
-  "name": "protocol",
-  "version": "0.3.1",
+  "name": "ticket",
+  "version": "0.1.0",
   "private": true,
   "packageManager": "pnpm@7.14.0",
-  "description": "一个用于快速复现请求协议的Web开发模板。",
+  "description": "基于Protocol的卡密系统",
   "author": {
     "url": "https://kuizuo.cn",
     "email": "hi@kuizuo.cn",

@@ -16,11 +16,10 @@ const _fetch = $fetch.create({
     options.headers = getHeaders(options.headers)
   },
   async onResponse() {
+
   },
   async onResponseError({ response, options }) {
     options?.params?.noMessage || message.error(response._data.message || '服务器错误')
-    if (response.status === 401)
-      useUserStore().reset()
   },
 })
 

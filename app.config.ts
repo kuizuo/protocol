@@ -1,6 +1,6 @@
 export default defineAppConfig({
-  title: 'Protocol',
-  description: '一个用于快速复现请求协议的Web开发模板。',
+  title: '卡密充值',
+  description: '基于 Protocol 的卡密系统',
   author: {
     name: 'kuizuo',
     link: 'https://github.com/kuizuo',

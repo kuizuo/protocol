@@ -7,9 +7,4 @@ export class Github {
     const { data } = await http.get<API.User>(`/users/${username}`)
     return data
   }
-
-  static async getRepos(username: string) {
-    const { data } = await http.get<API.Repo[]>(`/users/${username}/repos`)
-    return data
-  }
 }
