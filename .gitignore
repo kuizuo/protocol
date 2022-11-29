@@ -1,8 +1,9 @@
 node_modules
-*.log
-dist
-.output
+*.log*
 .nuxt
+.nitro
+.cache
+.output
 .env
-.vercel
+dist
 data
