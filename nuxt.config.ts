@@ -85,8 +85,13 @@ export default defineNuxtConfig({
           ? ['naive-ui', 'vueuc', 'date-fns-tz/esm/formatInTimeZone']
           : [],
     },
-    server: {
-      origin: 'https://localhost:8443/fcp/myApp',
+  },
+  nitro: {
+    devProxy: {
+      '/api/': {
+        target: 'http://localhost:8080/api/',
+        changeOrigin: true,
+      },
     },
   },
 })

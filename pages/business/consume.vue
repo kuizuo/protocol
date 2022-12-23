@@ -6,6 +6,7 @@ const route = useRoute()
 const title = route.meta.title as string
 
 definePageMeta({
+  middleware: ['auth'],
   layout: 'dashboard',
   title: '消费记录',
   icon: CatalogIcon,

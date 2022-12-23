@@ -7,10 +7,6 @@ const navbar = ref(null)
 
 const avatarOptions = [
   {
-    label: '个人设置',
-    key: 1,
-  },
-  {
     label: '退出登录',
     key: 2,
   },
@@ -19,9 +15,6 @@ const avatarOptions = [
 // 头像下拉菜单
 const avatarSelect = (key: number) => {
   switch (key) {
-    case 1:
-      router.push({ name: 'Setting' })
-      break
     case 2:
       userStore.logout()
       break
@@ -60,16 +53,16 @@ const avatarSelect = (key: number) => {
           <div flex-1 />
           <!-- 个人中心 -->
           <div class="">
-            <n-dropdown trigger="hover" :options="avatarOptions" @select="avatarSelect">
+            <NDropdown trigger="hover" :options="avatarOptions" @select="avatarSelect">
               <div class="cursor-pointer">
-                <n-avatar round src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg">
+                <NAvatar round src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg">
                   {{ userStore.info?.username }}
                   <template #icon>
                     <UserOutlined />
                   </template>
-                </n-avatar>
+                </NAvatar>
               </div>
-            </n-dropdown>
+            </NDropdown>
           </div>
         </div>
       </div>

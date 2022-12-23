@@ -1,7 +1,8 @@
 <script setup lang="ts">
+const app = useAppConfig()
 const userStore = useUserStore()
 
-const captchaImg = ref(`http://127.0.0.1:8080/api/captcha?t=${Math.random()}`)
+const captchaImg = ref(`/api/captcha?t=${Math.random()}`)
 
 // 演示环境下
 const form = ref({
@@ -15,7 +16,7 @@ async function submit() {
 }
 
 function updateCaptcha() {
-  captchaImg.value = `http://127.0.0.1:8080/api/captcha?t=${Math.random()}`
+  captchaImg.value = `/api/captcha?t=${Math.random()}`
 }
 
 definePageMeta({
@@ -29,7 +30,7 @@ definePageMeta({
       <div flex justify-center items-center mx-auto>
         <n-form ref="formRef" :model="form" :show-label="false">
           <div flex flex-col children:mx-auto>
-            <span text-2xl>药店管理系统</span>
+            <span text-2xl>{{ app.title }}</span>
           </div>
           <div text="center sm gray-400" mt-3 mb-6>
             — Login —

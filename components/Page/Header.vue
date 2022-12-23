@@ -24,7 +24,7 @@ const breadcrumbList = computed(() => {
 </script>
 
 <template>
-  <div class="lg:px-8 px-4 mb-6">
+  <div class="mb-6">
     <n-page-header>
       <template #header>
         <n-breadcrumb>

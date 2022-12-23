@@ -15,10 +15,12 @@ const _fetch = $fetch.create({
   async onRequest({ options }) {
     options.headers = getHeaders(options.headers)
   },
-  async onResponse() {
+  async onResponse({ response }) {
+    if (response._data.code !== 200)
+      throw new Error(response._data.msg || '未知错误')
   },
   async onResponseError({ response, options }) {
-    options?.params?.noMessage || message.error(response._data.message || '服务器错误')
+    options?.params?.noMessage || message.error(response._data.msg || '服务器错误')
     if (response.status === 401)
       useUserStore().reset()
   },
