@@ -14,7 +14,13 @@
     "url": "https://github.com/kuizuo/protocol",
     "type": "git"
   },
-  "keywords": ["protocol", "template", "web", "spider", "http"],
+  "keywords": [
+    "protocol",
+    "template",
+    "web",
+    "spider",
+    "http"
+  ],
   "scripts": {
     "build": "nuxi build",
     "dev": "nuxi dev",
@@ -36,6 +42,7 @@
     "@nuxtjs/color-mode": "^3.2.0",
     "@pinia/nuxt": "^0.4.4",
     "@unocss/nuxt": "^0.45.30",
+    "@vicons/ionicons5": "^0.12.0",
     "@vueuse/nuxt": "^9.5.0",
     "bumpp": "^8.2.1",
     "eslint": "^8.27.0",
@@ -43,7 +50,9 @@
     "nuxt": "^3.0.0",
     "pinia": "^2.0.24",
     "pinia-plugin-persistedstate": "^2.4.0",
+    "sass": "^1.56.2",
     "typescript": "^4.9.3",
+    "unplugin-icons": "^0.14.15",
     "unplugin-vue-components": "^0.22.9",
     "vitest": "^0.24.5"
   }

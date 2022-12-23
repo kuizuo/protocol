@@ -33,7 +33,7 @@ useHead({
     <n-config-provider :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme">
       <n-message-provider>
         <NuxtLoadingIndicator />
-        <NuxtPage />
+        <NuxtPage keepalive />
       </n-message-provider>
     </n-config-provider>
   </NuxtLayout>

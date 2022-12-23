@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/content',
+    'unplugin-icons/nuxt',
   ],
   content: {
     documentDriven: false,

@@ -6,7 +6,9 @@
       "naive-ui/volar",
       "@vueuse/nuxt",
       "@pinia/nuxt",
-      "pinia-plugin-persist"
+      "pinia-plugin-persist",
+      "unplugin-icons/types/vue",
+      "pages"
     ]
   }
 }
