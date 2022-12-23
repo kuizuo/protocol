@@ -1,50 +1,32 @@
 <script lang="ts" setup>
-// state
 const app = useAppConfig()
+
+const router = useRouter()
+const userStore = useUserStore()
 const navbar = ref(null)
-const showDrawer = useState<boolean>('navbar.showDrawer', () => false)
-const showOptions = useState<boolean>('navbar.showOptions', () => false)
 
-// methods
-const updateDrawerOptions = () => {
-  // drawer
-  if (showDrawer.value || showOptions.value)
-    document.body.classList.add('overflow-hidden')
+const avatarOptions = [
+  {
+    label: '个人设置',
+    key: 1,
+  },
+  {
+    label: '退出登录',
+    key: 2,
+  },
+]
 
-  else
-    document.body.classList.remove('overflow-hidden')
+// 头像下拉菜单
+const avatarSelect = (key: number) => {
+  switch (key) {
+    case 1:
+      router.push({ name: 'Setting' })
+      break
+    case 2:
+      userStore.logout()
+      break
+  }
 }
-const toggleDrawer = () => (showDrawer.value = !showDrawer.value)
-const toggleOptions = (show?: boolean) => {
-  if (show)
-    showOptions.value = show
-
-  else
-    showOptions.value = !showOptions.value
-}
-
-// lifecycle
-let timer: NodeJS.Timer
-onMounted(() => {
-  if (!navbar.value)
-    return
-
-  // scroll
-  // const { onScroll } = useSticky(navbar.value, 0)
-  // setTimeout(() => onScroll(), 50)
-
-  // on show on mobile
-  setInterval(() => {
-    // must in mobile
-    const minW = 1024
-    if (window.innerWidth < minW)
-      updateDrawerOptions()
-  }, 100)
-})
-onBeforeUnmount(() => {
-  if (timer)
-    clearInterval(timer)
-})
 </script>
 
 <template>
@@ -58,25 +40,6 @@ onBeforeUnmount(() => {
     <div class="max-w-8xl w-full mx-auto">
       <div class="py-3 lg:px-8 mx-4 lg:mx-0">
         <div class="relative flex items-center">
-          <!-- drawer:toggle -->
-          <div
-            v-if="$slots.drawer"
-            class="lg:hidden flex items-center self-center justify-center mr-2"
-          >
-            <button
-              class="flex items-center focus:outline-none"
-              aria-label="Toggle Drawer Menu"
-              @click="toggleDrawer()"
-            >
-              <span
-                class="flex items-center text-gray-600 dark:text-gray-300 text-lg"
-                aria-hidden="true"
-              >
-                <IconUil:bars v-if="!showDrawer" />
-                <IconUil:times v-else />
-              </span>
-            </button>
-          </div>
           <!-- title -->
           <slot name="title">
             <NuxtLink
@@ -86,60 +49,31 @@ onBeforeUnmount(() => {
             >
               <span class="sr-only">home</span>
               <span class="flex items-center">
-                <IconSimpleIcons:nuxtdotjs
+                <i
+                  i-ri:medicine-bottle-line
                   class="inline-block mr-2 text-lg text-primary-500"
                 />
                 {{ app.title }}
               </span>
             </NuxtLink>
           </slot>
-          <!-- menu -->
-          <slot name="menu" />
-          <!-- options:toggle -->
-          <div
-            v-if="$slots.options"
-            class="flex-1 flex justify-end lg:hidden"
-          >
-            <button
-              class="flex items-center focus:outline-none"
-              aria-label="Toggle Options Menu"
-              @click="toggleOptions()"
-            >
-              <span
-                class="flex items-center text-gray-600 dark:text-gray-300 text-sm"
-                aria-hidden="true"
-              >
-                132
-              </span>
-            </button>
+          <div flex-1 />
+          <!-- 个人中心 -->
+          <div class="">
+            <n-dropdown trigger="hover" :options="avatarOptions" @select="avatarSelect">
+              <div class="cursor-pointer">
+                <n-avatar round src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg">
+                  {{ userStore.info?.username }}
+                  <template #icon>
+                    <UserOutlined />
+                  </template>
+                </n-avatar>
+              </div>
+            </n-dropdown>
           </div>
         </div>
       </div>
     </div>
-    <ClientOnly>
-      <Teleport to="#app-after">
-        <!-- drawer -->
-        <Transition name="slide-fade-from-up" mode="out-in">
-          <div
-            v-if="showDrawer && $slots.drawer"
-            class="fixed lg:hidden bg-gray-100 dark:bg-slate-800 pt-12 top-0 left-0 w-screen h-screen z-30 flex flex-col"
-          >
-            <div class="flex-1 flex flex-col relative overflow-y-auto">
-              <slot name="drawer" :toggle-drawer="toggleDrawer" />
-            </div>
-          </div>
-        </Transition>
-
-        <!-- options -->
-        <div v-if="showOptions && $slots.options">
-          <slot
-            name="options"
-            :toggle-options="toggleOptions"
-            :show-options="showOptions"
-          />
-        </div>
-      </Teleport>
-    </ClientOnly>
   </div>
 </template>
 

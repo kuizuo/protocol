@@ -1,42 +1,63 @@
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { useMessage } from 'naive-ui'
-import { defineStore } from 'pinia'
+import { USER_TOKEN } from '~~/utils/constant'
 
 export const useUserStore = defineStore('user', () => {
-  const user = ref<API.User | null>(null)
-  const repos = ref<API.Repo[]>([])
-  const message = useMessage()
+  const router = useRouter()
+  const info = ref<API.User | null>(null)
+  const loading = ref(false)
+  // const message = useMessage()
 
-  async function getUser(username: string) {
-    const { data } = await request(`/api/user/${username}`)
-    if (data.login) {
-      user.value = data
-      message.success('获取成功')
+  async function login(form: API.Login) {
+    loading.value = true
+
+    try {
+      const response = await request<API.Result>('http://127.0.0.1:8080/api/login', {
+        method: 'POST',
+        body: JSON.stringify(form),
+      })
+
+      const { code, msg, data } = response
+      if (code !== 200) {
+        // message.error(msg)
+        loading.value = false
+        return
+      }
+
+      // message.success('登录成功')
+      info.value = data
+      router.push({ path: '/dashboard' })
     }
-    else {
-      message.error(data.message)
+    catch (error) {
+    }
+    finally {
+      loading.value = false
     }
   }
 
-  async function getRepos() {
-    const username = user.value?.login
-    const { data } = await request(`/api/repo/${username}`)
-    repos.value = data
-  }
+  async function logout() {
+    await request('http://127.0.0.1:8080/api/logout')
 
-  async function reset() {
-    user.value = null
-    repos.value = []
+    // message.success('退出成功')
+
+    info.value = {} as API.User
+    const cookie = useCookie(USER_TOKEN)
+    cookie.value = ''
+    router.push({ path: '/login' })
   }
 
   return {
-    user,
-    repos,
-    getUser,
-    getRepos,
-    reset,
+    info,
+    loading,
+    login,
+    logout,
   }
 }, {
   persist: {
     key: 'user',
+    paths: ['info'],
   },
 })
+
+if (import.meta.hot)
+  import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot))

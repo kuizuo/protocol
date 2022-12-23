@@ -6,11 +6,11 @@ const route = useRoute()
 const title = route.meta.title as string
 
 definePageMeta({
+  middleware: ['auth'],
   layout: 'dashboard',
   title: '仪表盘',
   icon: DashBoardIcon,
   order: 1,
-  keepalive: true,
 })
 </script>
 
@@ -21,16 +21,16 @@ definePageMeta({
     </PageHeader>
     <PageBody>
       <PageSection>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quia autem
-          debitis ab dolorum tempore placeat possimus perferendis porro sit aut
-          nobis quasi hic consequuntur, atque impedit nihil totam illo odit?
-        </p>
+        <p />
       </PageSection>
       <PageSection>
-        <div v-for="i in 30" :key="i" class="text-6xl uppercase">
-          测试
-        </div>
+        <n-grid x-gap="12" :cols="4">
+          <n-gi v-for="i in 4" :key="i">
+            <n-card title="卡片">
+              卡片内容
+            </n-card>
+          </n-gi>
+        </n-grid>
       </PageSection>
     </PageBody>
   </PageWrapper>

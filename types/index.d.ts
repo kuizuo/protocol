@@ -1,7 +1,7 @@
 declare namespace API {
   interface Result<T = any> {
     code: number
-    message: string
+    msg: string
     data: T
   }
 }
