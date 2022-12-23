@@ -9,6 +9,10 @@ const form = ref({
 async function submit() {
   await userStore.login(form.value)
 }
+
+definePageMeta({
+  middleware: ['guest'],
+})
 </script>
 
 <template>
