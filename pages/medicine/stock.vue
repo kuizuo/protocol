@@ -78,7 +78,7 @@ const columns: DataTableColumns<API.Medicine> = [
     },
   },
   {
-    width: 150,
+    width: 140,
     title: '操作',
     key: 'action',
     fixed: 'right',

@@ -31,7 +31,7 @@ const avatarSelect = (key: number) => {
       <slot name="banner" />
     </div>
     <div class="max-w-8xl w-full mx-auto">
-      <div class="py-3 lg:px-8 mx-4 lg:mx-0">
+      <div class="py-1 lg:px-8 mx-4 lg:mx-0">
         <div class="relative flex items-center">
           <!-- title -->
           <slot name="title">
