@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import type { DataTableColumns, DataTableRowKey, FormInst } from 'naive-ui'
-import { NButton, NDataTable, NDropdown, NForm, NFormItem, NInputNumber, NModal, NSpace, NTag, useMessage } from 'naive-ui'
+import { NAvatar, NButton, NTag, useMessage } from 'naive-ui'
+import type { DataTableColumns, DataTableRowKey, FormInst, UploadFileInfo } from 'naive-ui'
 import type { RowData } from 'naive-ui/es/data-table/src/interface'
 import ListIcon from '~icons/carbon/list'
-
-const route = useRoute()
 
 definePageMeta({
   layout: 'dashboard',
@@ -12,19 +10,6 @@ definePageMeta({
   icon: ListIcon,
   order: 4,
 })
-// import { columns } from './data'
-
-const response = await request<API.Result>('/api/medicine/page', {
-  method: 'GET',
-  params: {
-    page: 1,
-    pageSize: 10,
-  },
-})
-
-response.data
-
-const { copy, copied } = useClipboard()
 
 const columns: DataTableColumns<API.Medicine> = [
   {
@@ -32,50 +17,60 @@ const columns: DataTableColumns<API.Medicine> = [
     fixed: 'left',
   },
   {
-    title: '是否使用',
-    key: 'used',
-    filterOptions: [
-      {
-        label: '已使用',
-        value: 1,
-      },
-      {
-        label: '未使用',
-        value: 0,
-      },
-    ],
-    filter(value, row) {
-      return row.used === !!value
-    },
+    title: '药品',
+    key: 'name',
+  },
+  {
+    title: '类型',
+    key: 'type.name',
+  },
+  {
+    title: '图片',
+    key: 'img',
     render(row) {
-      const type = row.used ? 'error' : 'success'
-      const message = row.used ? '已使用' : '未使用'
       return h(
-        NTag,
+        NAvatar,
         {
-          style: {
-            marginRight: '6px',
-          },
-          type,
-          bordered: false,
-        },
-        {
-          default: () => message,
+          src: row.img,
+          size: 'medium',
         },
       )
     },
+
   },
   {
-    title: '使用时间',
-    key: 'usedTime',
-    sorter: true,
-    render(row, index) {
-      if (row.usedTime) {
-        const format = useDateFormat(row.usedTime ?? '', 'YYYY-MM-DD HH:mm:ss')
-        return h('span', ['', format.value])
-      }
-      return ''
+    title: '标签',
+    key: 'tags',
+    render(row) {
+      const tags = row.tags?.split(',')?.map((tagKey) => {
+        return h(
+          NTag,
+          {
+            style: {
+              marginRight: '4px',
+            },
+            type: 'info',
+            bordered: false,
+          },
+          {
+            default: () => tagKey,
+          },
+        )
+      })
+      return tags
     },
+  },
+  {
+    title: '描述',
+    key: 'medDesc',
+  },
+  {
+    title: '价格',
+    key: 'price',
+  },
+  {
+    title: '库存',
+    key: 'stockNum',
   },
   {
     width: 140,
@@ -84,18 +79,44 @@ const columns: DataTableColumns<API.Medicine> = [
     fixed: 'right',
     render(row) {
       return [
-        // h(
-        //   NButton,
-        //   {
-        //     style: {
-        //       marginRight: '6px',
-        //     },
-        //     size: 'small',
-        //     type: 'warning',
-        //     onClick: () => handleEdit(row),
-        //   },
-        //   { default: () => '编辑' },
-        // ),
+        h(
+          NButton,
+          {
+            style: {
+              marginRight: '6px',
+              marginBottom: '2px',
+            },
+            size: 'small',
+            type: 'info',
+            onClick: () => handleSell(row),
+          },
+          { default: () => '销售' },
+        ),
+        h(
+          NButton,
+          {
+            style: {
+              marginRight: '6px',
+              marginBottom: '2px',
+
+            },
+            size: 'small',
+            type: 'info',
+            onClick: () => handlePurchase(row),
+          },
+          { default: () => '进货' },
+        ), h(
+          NButton,
+          {
+            style: {
+              marginRight: '6px',
+            },
+            size: 'small',
+            type: 'warning',
+            onClick: () => handleEdit(row),
+          },
+          { default: () => '编辑' },
+        ),
         h(
           NButton,
           {
@@ -113,29 +134,21 @@ const columns: DataTableColumns<API.Medicine> = [
 ]
 
 const message = useMessage()
+
 let showModal = $ref(false)
 let title = $ref('')
-
-const handleAdd = () => {
-  title = '添加卡密'
-  showModal = true
-}
-
-async function handleEdit(record: API.Medicine) {
-  title = '编辑卡密'
-  showModal = true
-}
-
-async function handleDelete(record: API.Medicine) {
-  const response = await request(`/api/ticket/${record.no}`, { method: 'DELETE' })
-
-  message.success('删除成功')
-  refresh()
-}
+let isEdit = $ref(false)
 
 const formRef = $ref<FormInst | null>()
 const form = reactive({
-  count: 5,
+  id: -1,
+  name: '',
+  img: '',
+  tags: '',
+  medDesc: '',
+  price: 0,
+  stockNum: 0,
+  typeId: -1,
 })
 const rowKey = (row: RowData) => row.no
 const checkedRowKeys = ref<DataTableRowKey[]>([])
@@ -146,26 +159,170 @@ const pagination = reactive({
 })
 let formBtnLoading = $ref(false)
 
+const showPreviewModal = ref(false)
+const previewImageUrl = ref('')
+
+const previewFileList = ref<UploadFileInfo[]>([
+])
+
+const { data, refresh, error } = await useAsyncData('medicine-list', async () => {
+  const response = await request<API.Result>('/api/medicine/page', {
+    method: 'GET',
+    params: {
+      page: pagination.current,
+      pageSize: pagination.pageSize,
+    },
+  })
+  return response.data.medicineList
+})
+
+const { data: typeList } = await useAsyncData('medicine-type-list', async () => {
+  const response = await request<API.Result>('/api/medicine/type/list', {
+    method: 'GET',
+  })
+  return response.data.map((d: any) => {
+    return {
+      label: d.name,
+      value: d.id,
+    }
+  })
+})
+
+async function handleAdd() {
+  title = '添加'
+  showModal = true
+  isEdit = false
+  form.id = -1
+  form.name = ''
+  form.img = ''
+  previewFileList.value = []
+  form.tags = ''
+  form.medDesc = ''
+  form.price = 0
+  form.stockNum = 0
+  form.typeId = -1
+}
+
+async function handleEdit(record: API.Medicine) {
+  title = '编辑'
+  showModal = true
+  isEdit = true
+  form.id = record.id
+  form.name = record.name
+  form.img = record.img
+  previewFileList.value = [{
+    id: record.id.toString(),
+    name: record.name,
+    status: 'finished',
+    url: record.img,
+  }]
+  form.tags = record.tags
+  form.price = record.price
+  form.stockNum = record.stockNum
+  form.medDesc = record.medDesc
+  form.typeId = record.type.id
+}
+
 async function confirmForm(e: Event) {
   e.preventDefault()
   formBtnLoading = true
 
-  const response = await request('/api/ticket', {
-    method: 'POST',
-    body: {
-      count: form.count,
-    },
-  })
+  try {
+    const url = isEdit ? '/api/medicine/update' : '/api/medicine/add'
+    await request(url, {
+      method: 'POST',
+      body: form,
+    })
+    message.success('操作成功')
+    showModal = false
 
-  message.success('创建成功')
+    refresh()
+  }
+  catch (error) {
+    message.error((error as Error).message)
+  }
+  finally {
+    formBtnLoading = false
+  }
+}
 
-  formBtnLoading = false
-  showModal = false
-  refresh()
+async function handleDelete(record: API.Medicine) {
+  try {
+    await request(`/api/medicine/remove?id=${record.id}`, {
+      method: 'POST',
+    })
+
+    message.success('删除成功')
+    refresh()
+  }
+  catch (error) {
+    message.error((error as Error).message)
+  }
+}
+
+let showSellModal = $ref(false)
+const selltitle = $ref('')
+let isSell = $ref(false)
+const formSellRef = $ref<FormInst | null>()
+const formSell = reactive({
+  actualPayments: 0,
+  id: -1,
+  medIds: [],
+  quantitySold: [],
+  note: '',
+})
+
+async function handlePurchase(record: API.Medicine) {
+  showSellModal = true
+  isSell = false
+
+  formSell.medIds = [record.id]
+  formSell.note = '进货'
+}
+
+async function handleSell(record: API.Medicine) {
+  showSellModal = true
+  isSell = true
+
+  formSell.medIds = [record.id]
+  formSell.note = '销售'
+}
+
+async function confirmSellForm(e: Event) {
+  e.preventDefault()
+  formBtnLoading = true
+
+  try {
+    const url = isSell ? '/api/medicine/sell' : '/api/medicine/purchase'
+
+    await request(url, {
+      method: 'POST',
+      body: {
+        ...formSell,
+        quantitySold: [formSell.quantitySold],
+      },
+    })
+    message.success('操作成功')
+    showSellModal = false
+
+    refresh()
+  }
+  catch (error) {
+    message.error((error as Error).message)
+  }
+  finally {
+    formBtnLoading = false
+  }
 }
 
 function handleCheck(rowKeys: DataTableRowKey[]) {
   checkedRowKeys.value = rowKeys
+}
+
+function handlePreview(file: UploadFileInfo) {
+  const { url } = file
+  previewImageUrl.value = url as string
+  showPreviewModal.value = true
 }
 </script>
 
@@ -173,8 +330,30 @@ function handleCheck(rowKeys: DataTableRowKey[]) {
   <PageWrapper>
     <PageHeader />
     <PageBody>
-      <PageSection />
-
+      <NRow :gutter="12">
+        <NCol :span="12">
+          <NSpace justify="start" mb-2>
+            <!-- 刷新 -->
+            <NTooltip trigger="hover">
+              <template #trigger>
+                <div @click="refresh()">
+                  <NIcon size="18">
+                    <i i-carbon-restart text-gray-8 inline-block cursor-pointer select-none opacity-75 transition hover:opacity-100 hover:text-blue-600 />
+                  </NIcon>
+                </div>
+              </template>
+              <span>刷新</span>
+            </NTooltip>
+          </NSpace>
+        </NCol>
+        <NCol :span="12">
+          <NSpace justify="end" align="center" mb-2>
+            <NButton type="info" @click="handleAdd">
+              添加
+            </NButton>
+          </NSpace>
+        </NCol>
+      </NRow>
       <NDataTable
         :columns="columns"
         :data="data"
@@ -190,12 +369,49 @@ function handleCheck(rowKeys: DataTableRowKey[]) {
           :label-width="80"
           class="py-4"
         >
-          <NFormItem label="卡密数量">
-            <NInputNumber
-              v-model:value="form.count"
-              :min="1"
-              :max="100"
-              :step="1"
+          <NFormItem label="药品名">
+            <NInput
+              v-model:value="form.name"
+              placeholder="请输入药品名"
+            />
+          </NFormItem>
+          <NFormItem label="图片">
+            <n-upload
+              action="/upload"
+              :default-file-list="previewFileList"
+              list-type="image-card"
+              @preview="handlePreview"
+            />
+          </NFormItem>
+          <NFormItem label="药品类型">
+            <NSelect
+              v-model:value="form.typeId"
+              :options="typeList"
+              placeholder="请输入药品类型"
+            />
+          </NFormItem>
+          <NFormItem label="标签">
+            <NInput
+              v-model:value="form.tags"
+              placeholder="请输入药品标签"
+            />
+          </NFormItem>
+          <NFormItem label="价格">
+            <NInput
+              v-model:value="form.price"
+              placeholder="请输入药品价格"
+            />
+          </NFormItem>
+          <NFormItem label="库存">
+            <NInput
+              v-model:value="form.stockNum"
+              placeholder="请输入库存数量"
+            />
+          </NFormItem>
+          <NFormItem label="描述">
+            <NInput
+              v-model:value="form.medDesc"
+              placeholder="请输入药品描述"
             />
           </NFormItem>
         </NForm>
@@ -210,6 +426,54 @@ function handleCheck(rowKeys: DataTableRowKey[]) {
             </NButton>
           </NSpace>
         </template>
+      </NModal>
+      <NModal v-model:show="showSellModal" :show-icon="false" preset="dialog" :title="title">
+        <NForm
+          ref="formSellRef"
+          :model="formSell"
+          label-placement="left"
+          :label-width="80"
+          class="py-4"
+        >
+          <NFormItem label="数量">
+            <NInputNumber
+              v-model:value="formSell.quantitySold"
+              placeholder="请输入数量"
+            />
+          </NFormItem>
+          <NFormItem label="盈亏额">
+            <NInputNumber
+              v-model:value="formSell.actualPayments"
+              placeholder="请输入盈亏额"
+            />
+          </NFormItem>
+          <NFormItem label="备注">
+            <NInput
+              v-model:value="formSell.note"
+              placeholder="请输入备注"
+            />
+          </NFormItem>
+        </NForm>
+
+        <template #action>
+          <NSpace>
+            <NButton @click="() => (showSellModal = false)">
+              取消
+            </NButton>
+            <NButton type="info" @click="confirmSellForm">
+              确定
+            </NButton>
+          </NSpace>
+        </template>
+      </NModal>
+
+      <NModal
+        v-model:show="showPreviewModal"
+        preset="card"
+        style="width: 600px"
+        title="预览图"
+      >
+        <img :src="previewImageUrl" style="width: 100%">
       </NModal>
     </PageBody>
   </PageWrapper>

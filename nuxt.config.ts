@@ -92,6 +92,10 @@ export default defineNuxtConfig({
         target: 'http://localhost:8080/api/',
         changeOrigin: true,
       },
+      '/upload/': {
+        target: 'http://localhost:8080/upload/',
+        changeOrigin: true,
+      },
     },
   },
 })

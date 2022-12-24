@@ -11,7 +11,7 @@ definePageMeta({
   order: 5,
 })
 
-const { data, refresh } = await useAsyncData('count', async () => {
+const { data, refresh } = await useAsyncData('member-list', async () => {
   const response = await request<API.Result>('/api/member/list')
   return response.data
 })

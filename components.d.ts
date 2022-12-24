@@ -38,10 +38,12 @@ declare module '@vue/runtime-core' {
     NPageHeader: typeof import('naive-ui')['NPageHeader']
     NResult: typeof import('naive-ui')['NResult']
     NRow: typeof import('naive-ui')['NRow']
+    NSelect: typeof import('naive-ui')['NSelect']
     NSpace: typeof import('naive-ui')['NSpace']
     NTag: typeof import('naive-ui')['NTag']
     NThing: typeof import('naive-ui')['NThing']
     NTooltip: typeof import('naive-ui')['NTooltip']
+    NUpload: typeof import('naive-ui')['NUpload']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

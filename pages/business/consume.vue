@@ -11,7 +11,7 @@ definePageMeta({
   order: 6,
 })
 
-const { data, refresh } = await useAsyncData('count', async () => {
+const { data, refresh } = await useAsyncData('consume', async () => {
   const response = await request<API.Result>('/api/inventoryLog/list')
   return response.data.map((d: any) => {
     return {

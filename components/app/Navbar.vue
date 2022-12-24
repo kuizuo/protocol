@@ -55,11 +55,8 @@ const avatarSelect = (key: number) => {
           <div class="">
             <NDropdown trigger="hover" :options="avatarOptions" @select="avatarSelect">
               <div class="cursor-pointer">
-                <NAvatar round src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg">
+                <NAvatar round>
                   {{ userStore.info?.username }}
-                  <template #icon>
-                    <UserOutlined />
-                  </template>
                 </NAvatar>
               </div>
             </NDropdown>
