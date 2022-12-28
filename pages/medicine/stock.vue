@@ -73,6 +73,14 @@ const columns: DataTableColumns<API.Medicine> = [
     key: 'stockNum',
   },
   {
+    title: '生产批号',
+    key: 'batchNumber',
+  },
+  {
+    title: '生产日期',
+    key: 'manufactureDate',
+  },
+  {
     width: 140,
     title: '操作',
     key: 'action',
@@ -148,6 +156,11 @@ const form = reactive({
   medDesc: '',
   price: 0,
   stockNum: 0,
+  batchNumber: '', // 批号
+  manufactureDate: null, // 生产日期
+  purchaseDate: '2022-12-18', // 进货日期
+  shelfLife: 0, // 保质期
+  isOtc: false, // 是否处方药
   typeId: -1,
 })
 const rowKey = (row: RowData) => row.no
@@ -164,6 +177,21 @@ const previewImageUrl = ref('')
 
 const previewFileList = ref<UploadFileInfo[]>([
 ])
+
+const handleFinish = ({
+  file,
+  event,
+}: {
+  file: UploadFileInfo
+  event?: ProgressEvent
+}) => {
+  const json = JSON.parse(event!.target!.response)
+
+  const src = json.data.src
+
+  form.img = src
+  return file
+}
 
 const { data, refresh, error } = await useAsyncData('medicine-list', async () => {
   const response = await request<API.Result>('/api/medicine/page', {
@@ -200,7 +228,10 @@ async function handleAdd() {
   form.medDesc = ''
   form.price = 0
   form.stockNum = 0
-  form.typeId = -1
+  form.batchNumber = ''
+  form.manufactureDate = null
+  form.shelfLife = 0
+  form.typeId = 1
 }
 
 async function handleEdit(record: API.Medicine) {
@@ -220,6 +251,9 @@ async function handleEdit(record: API.Medicine) {
   form.price = record.price
   form.stockNum = record.stockNum
   form.medDesc = record.medDesc
+  form.batchNumber = record.batchNumber
+  form.manufactureDate = record.manufactureDate
+  form.shelfLife = record.shelfLife
   form.typeId = record.type.id
 }
 
@@ -380,6 +414,7 @@ function handlePreview(file: UploadFileInfo) {
               action="/upload"
               :default-file-list="previewFileList"
               list-type="image-card"
+              @finish="handleFinish"
               @preview="handlePreview"
             />
           </NFormItem>
@@ -397,15 +432,30 @@ function handlePreview(file: UploadFileInfo) {
             />
           </NFormItem>
           <NFormItem label="价格">
-            <NInput
+            <NInputNumber
               v-model:value="form.price"
               placeholder="请输入药品价格"
             />
           </NFormItem>
           <NFormItem label="库存">
-            <NInput
+            <NInputNumber
               v-model:value="form.stockNum"
               placeholder="请输入库存数量"
+            />
+          </NFormItem>
+          <NFormItem label="药品批号">
+            <NInput
+              v-model:value="form.batchNumber"
+              placeholder="请输入药品批号"
+            />
+          </NFormItem>
+          <NFormItem label="生产日期">
+            <n-date-picker v-model:formatted-value="form.manufactureDate" value-format="yyyy-MM-dd" type="date" />
+          </NFormItem>
+          <NFormItem label="保质期">
+            <NInput
+              v-model:value="form.shelfLife"
+              placeholder="请输入保质期"
             />
           </NFormItem>
           <NFormItem label="描述">

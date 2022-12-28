@@ -6,10 +6,10 @@ const route = useRoute()
 const title = route.meta.title as string
 
 definePageMeta({
-  layout: 'dashboard',
-  title: '药品积分兑换',
-  icon: ShoppingIcon,
-  order: 6,
+  // layout: 'dashboard',
+  // title: '药品积分兑换',
+  // icon: ShoppingIcon,
+  // order: 6,
 })
 </script>
 

@@ -26,7 +26,7 @@ const menus: MenuOption[] = router.options.routes
       key: path,
       icon: renderIcon(icon),
       ...(children!.length > 0 && {
-        children: children!.sort((a, b) => a.meta!.order - b.meta!.order).map((child) => {
+        children: children!.filter(route => route.meta?.layout === 'dashboard').sort((a, b) => a.meta!.order - b.meta!.order).map((child) => {
           const { title, icon } = child.meta!
 
           return {

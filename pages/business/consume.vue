@@ -6,7 +6,7 @@ import CatalogIcon from '~icons/carbon/catalog'
 definePageMeta({
   middleware: ['auth'],
   layout: 'dashboard',
-  title: '消费记录',
+  title: '库存流水记录',
   icon: CatalogIcon,
   order: 6,
 })
