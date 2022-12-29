@@ -16,8 +16,8 @@ const checkMobileMode = () => {
 }
 
 const watchWidth = () => {
-  const Width = document.body.clientWidth
-  if (Width <= 950)
+  const width = document.body.clientWidth
+  if (width <= mobileWidth)
     collapsed = true
 
   else collapsed = false
@@ -32,37 +32,35 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <div class="flex flex-col min-h-screen">
-      <n-layout>
-        <n-layout-header bordered>
-          <AppNavbar />
-        </n-layout-header>
-        <n-layout has-sider>
-          <n-layout-sider
-            bordered
-            show-trigger
-            :collapsed="collapsed"
-            collapse-mode="width"
-            :collapsed-width="64"
-            :width="240"
-            :native-scrollbar="false"
-            style="min-height: calc(100vh - 50px);"
-            @collapse="collapsed = true"
-            @expand="collapsed = false"
-          >
-            <AppSidebar v-model:collapsed="collapsed" />
-          </n-layout-sider>
-          <ClientOnly fallback-tag="span" fallback="Loading...">
-            <n-layout-content style="max-height: calc(100vh - 50px);" content-style="padding: 24px;" :native-scrollbar="false">
-              <slot />
-            </n-layout-content>
-          </ClientOnly>
-        </n-layout>
-        <!-- <n-layout-footer bordered>
+  <div class="flex flex-col min-h-screen">
+    <n-layout>
+      <n-layout-header bordered>
+        <AppNavbar />
+      </n-layout-header>
+      <n-layout has-sider>
+        <n-layout-sider
+          bordered
+          show-trigger
+          :collapsed="collapsed"
+          collapse-mode="width"
+          :collapsed-width="64"
+          :width="240"
+          :native-scrollbar="false"
+          style="min-height: calc(100vh - 50px);"
+          @collapse="collapsed = true"
+          @expand="collapsed = false"
+        >
+          <AppSidebar v-model:collapsed="collapsed" />
+        </n-layout-sider>
+        <ClientOnly fallback-tag="span" fallback="Loading...">
+          <n-layout-content style="max-height: calc(100vh - 50px);" content-style="padding: 24px;" :native-scrollbar="false">
+            <slot />
+          </n-layout-content>
+        </ClientOnly>
+      </n-layout>
+      <!-- <n-layout-footer bordered>
           <AppFooter />
         </n-layout-footer> -->
-      </n-layout>
-    </div>
+    </n-layout>
   </div>
 </template>
